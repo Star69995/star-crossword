@@ -5,4 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
     base: '/star-crossword/', // שנה לשם המאגר שלך
     plugins: [react()],
+    server: {
+        host: '0.0.0.0', // מאפשר גישה מכל כתובת IP
+        port: 5173 // או כל פורט אחר שברצונך להשתמש בו
+    }
 })

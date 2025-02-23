@@ -49,22 +49,9 @@ const Block = ({ row, col }) => {
         }
     };
     const isBlack = cell.solution === null;
-    // let isSelected = cell.definitions.some(def => def === selectedDefinition) && selectedDefinition !== null;
-
-    // // משתנה שיעדכן אם התא הנוכחי שייך להגדרה הפעילה
-    // const [isSelected, setIsSelected] = useState(false);
-    // // מעדכן אם התא הנוכחי שייך להגדרה הפעילה
-    // useEffect(() => {
-    //     const isSelected1 = cell.definitions.some(def => def === selectedDefinition) && selectedDefinition !== null;
-    //     setIsSelected(isSelected1);
-    //     if (isSelected1) {
-    //         console.log("1");}
-    //     // change backgroundColor here
-    // }, [selectedDefinition]);  // מעדכן את isSelected כאשר selectedDefinition או  משתנים
 
     const isSelected = selectedDefinition && cell.definitions.includes(selectedDefinition);
 
-    // console.log(cell);
     const [focusedCell, setFocusedCell] = useState(null);
     return (
         <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -96,11 +83,11 @@ const Block = ({ row, col }) => {
                             cell.isHighlighted ? 'rgb(200, 220, 255)' :
                                 showSolution && cell.solution ? 'rgb(221, 255, 221)' :
                                     'white',
-
-                    boxSizing: 'border-box',
                     outline: 'none',
+                    opacity: isBlack || (showSolution && cell.solution) ? 1 : undefined,
                 }}
                 disabled={isBlack || (showSolution && cell.solution)}
+                
                 onFocus={(e) => {
                     if (!showSolution) {
                         // e.target.style.backgroundColor = 'rgb(230, 232, 253)';
