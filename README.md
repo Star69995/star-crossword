@@ -27,4 +27,4 @@ npm run deploy
 ### View the project live:
 You can view the deployed project at:
 
-[https://star69995.github.io/star-crossword/]
+https://star69995.github.io/star-crossword/
