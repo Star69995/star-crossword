@@ -24,7 +24,53 @@ export const CrosswordProvider = ({ children }) => {
     const updateCell = (row, col, value) => {
         const updatedGrid = [...grid];
         updatedGrid[row][col].value = value;
-        setGridData({ grid: updatedGrid, definitions, wordPositions });
+
+        // יצירת עותק מעודכן של ההגדרות
+        const updatedDefinitions = { ...definitions };
+
+        updatedGrid[row][col].definitions.forEach((definition) => {
+            const { definition: defText } = definition;
+            const wordData = wordPositions.find(w => w.definition === defText);
+
+
+            // נוודא שההגדרה נמצאה לפני שניגשים ל-positions
+            if (wordData) {
+                const { row, col, isVertical } = wordData;
+
+                // בדיקה האם כל התאים של המילה מולאו נכון
+                const isFullyAnswered = [];
+                for (let i = 0; i < defText.length; i++) {
+
+                    const checkRow = isVertical ? row + i : row;
+                    const checkCol = isVertical ? col : col + i;
+
+                    if (updatedGrid[checkRow]==undefined){
+                        continue;
+                    }
+                    if (updatedGrid[checkRow][checkCol]==undefined){
+                        continue;
+                    }
+                    if (updatedGrid[checkRow][checkCol].solution === null) {
+                        continue;
+                    }
+
+                    if (updatedGrid[checkRow][checkCol].value !== updatedGrid[checkRow][checkCol].solution) {
+                        isFullyAnswered.push(false);
+                    }
+                }
+
+                // עדכון סטטוס ההגדרה
+                const definitionCategory = isVertical ? "down" : "across";
+                const definitionEntry = definitions[definitionCategory].find(d => d.text === defText);
+
+                if (definitionEntry) {
+                    definitionEntry.isAnswered = isFullyAnswered.length === 0;
+                }
+            }
+        });
+
+        // עדכון ה- state
+        setGridData({ grid: updatedGrid, definitions: updatedDefinitions, wordPositions });
     };
 
 
@@ -63,7 +109,7 @@ export const CrosswordProvider = ({ children }) => {
         }
         else if (inputDefinition) {
             const newDefinition = { definition: inputDefinition, isVertical: getDefinitionDirection(inputDefinition) };
-            console.log("def", newDefinition);
+            // console.log("def", newDefinition);
             setSelectedDefinition(newDefinition);
             updateHighlightedCells(newDefinition);
         }

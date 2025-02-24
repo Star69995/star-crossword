@@ -69,7 +69,8 @@ const MakeGrid = ({ size = 12, maxWords = 10 }) => {
                 wordIndex: wordIndex, // מזהה המילה
                 definitions: [
                     ...newGrid[currentRow][currentCol].definitions, // שומר על ההגדרות הקיימות
-                    { definition, isVertical } // מוסיף את ההגדרה החדשה
+                    { definition, isVertical }, // מוסיף את ההגדרה החדשה
+                    // isAnswered = false
                 ],
                 isHighlighted: false,
                 definitionNumber: i === 0 ? definitionNumber : newGrid[currentRow][currentCol].definitionNumber
@@ -169,13 +170,14 @@ const MakeGrid = ({ size = 12, maxWords = 10 }) => {
         // מסדרים את ההגדרות לפי מאוזן/מאונך
         const formattedDefinitions = {
             across: [], // מאוזן
-            down: []   // מאונך
+            down: [],   // מאונך
         };
 
         wordPositions.forEach(word => {
             const definitionObj = {
                 number: word.definitionNumber,
-                text: word.definition
+                text: word.definition,
+                isAnswered: false
             };
 
             if (word.isVertical) {
@@ -189,6 +191,7 @@ const MakeGrid = ({ size = 12, maxWords = 10 }) => {
         formattedDefinitions.across.sort((a, b) => a.number - b.number);
         formattedDefinitions.down.sort((a, b) => a.number - b.number);
 
+        // console.log("formattedDefinitions", formattedDefinitions);
         return {
             grid,
             definitions: formattedDefinitions,

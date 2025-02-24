@@ -12,10 +12,6 @@ const Block = ({ row, col }) => {
         const inputValue = e.target.value;
         if (inputValue === '' || /^[א-ת]$/.test(inputValue)) {
             updateCell(row, col, inputValue);
-            if (inputValue === cell.solution) {
-                e.target.disabled = true;
-                e.target.style.backgroundColor = 'rgb(221, 255, 221)';
-            }
             // מציאת האות הבאה באותה הגדרה
             moveToNextCell(row, col, cell.isVertical);
         }
@@ -23,7 +19,7 @@ const Block = ({ row, col }) => {
 
     // פונקציה שמעבירה את הפוקוס לאות הבאה
     const moveToNextCell = (row, col, isVertical) => {
-        console.log(row, col, isVertical);
+        // console.log(row, col, isVertical);
         let nextRow = row;
         let nextCol = col;
 
@@ -35,9 +31,9 @@ const Block = ({ row, col }) => {
 
         // אם הגעת לסוף ההגדרה, עבר להנחה הבאה
         if (nextRow >= 0 && nextRow < grid.length && nextCol >= 0 && nextCol < grid[0].length) {
-            console.log(nextRow, nextCol);
+            // console.log(nextRow, nextCol);
             const nextCell = document.querySelector(`[data-row="${nextRow}"][data-col="${nextCol}"]`);
-            console.log(nextCell);
+            // console.log(nextCell);
             if (nextCell) {
                 nextCell.focus();
             }
@@ -79,27 +75,25 @@ const Block = ({ row, col }) => {
                     fontSize: '24px',
                     border: 'none',
                     backgroundColor: isBlack ? 'black' :
-                        focusedCell?.row === row && focusedCell?.col === col ? 'rgb(171, 178, 255)' :
-                            cell.isHighlighted ? 'rgb(200, 220, 255)' :
-                                showSolution && cell.solution ? 'rgb(221, 255, 221)' :
-                                    'white',
+                        focusedCell?.row === row && focusedCell?.col === col && cell.value === cell.solution ? 'rgb(84, 180, 143)' :  // צבע ירוק בהיר כשנכון וממוקד
+                            focusedCell?.row === row && focusedCell?.col === col ? 'rgb(171, 178, 255)' :
+                                (cell.isHighlighted && cell.value === cell.solution) ? 'rgb(158, 255, 198)' : // צבע שונה אם ההגדרה מודגשת והתשובה נכונה
+                                    cell.isHighlighted ? 'rgb(200, 220, 255)' :
+                                        (cell.value === cell.solution || (showSolution && cell.solution)) ? 'rgb(221, 255, 221)' :
+                                            'white',
                     outline: 'none',
                     opacity: isBlack || (showSolution && cell.solution) ? 1 : undefined,
                 }}
-                disabled={isBlack || (showSolution && cell.solution)}
-                
+                disabled={isBlack}
+                readOnly={cell.value === cell.solution || showSolution && cell.solution}
                 onFocus={(e) => {
                     if (!showSolution) {
-                        // e.target.style.backgroundColor = 'rgb(230, 232, 253)';
                         e.target.select();
 
                         setFocusedCell({ row, col });
                     }
                 }}
                 onBlur={(e) => {
-                    if (!showSolution && value !== cell.solution && !cell.isHighlighted ) {
-                        e.target.style.backgroundColor = 'white';
-                    }
                     setFocusedCell(null);
                 }}
                 data-row={row}

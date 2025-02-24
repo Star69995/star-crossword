@@ -2,12 +2,17 @@ import { useCrossword } from '../providers/CrosswordContext';
 import React, { useState } from 'react';
 
 function Definition({ definition }) {
-    const { selectedDefinition, setActiveDefinition } = useCrossword();
+    const { selectedDefinition, setActiveDefinition, definitions } = useCrossword();
 
     const cleanedDefinition = definition.replace(/^\d+\.\s/, '');
 
 
     const isActive = selectedDefinition?.definition === cleanedDefinition;
+
+    const isCorrect = [...definitions.across, ...definitions.down].some(def =>
+        def.text === cleanedDefinition && def.isAnswered
+    );
+
 
 
     return (
@@ -19,6 +24,7 @@ function Definition({ definition }) {
                 padding: '5px 10px',
                 borderRadius: '5px',
                 width: 'fit-content',
+                textDecoration: isCorrect ? 'line-through' : 'none'
             }}
         >
             {definition}
