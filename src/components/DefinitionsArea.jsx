@@ -13,7 +13,7 @@ function DefinitionsArea() {
     }
 
     return (
-        <div className="mt-6 space-y-2">
+        <div className="mt-1 d-flex flex-column gap-2">
             <h2>הגדרות:</h2>
 
             <div

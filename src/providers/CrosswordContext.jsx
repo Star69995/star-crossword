@@ -6,12 +6,14 @@ const CrosswordContext = createContext();
 export const useCrossword = () => useContext(CrosswordContext);
 
 export const CrosswordProvider = ({ children }) => {
-    const [{ grid, definitions, wordPositions }, setGridData] = useState(() => MakeGrid({ size: 12, maxWords: 8 }));
+    const [gridSize, setSize] = useState(14);
+    const [gridMaxWords, setMaxWords] = useState(12);
+    const [{ grid, definitions, wordPositions }, setGridData] = useState(() => MakeGrid({ size: gridSize, maxWords: gridMaxWords }));
     const [showSolution, setShowSolution] = useState(false);
     const [selectedDefinition, setSelectedDefinition] = useState(null); // שמירת ההגדרה הפעילה
 
     const handleNewPuzzle = () => {
-        const { grid, definitions, wordPositions } = MakeGrid({ size: 12, maxWords: 8 });
+        const { grid, definitions, wordPositions } = MakeGrid({ size: gridSize, maxWords: gridMaxWords });
         setGridData({ grid, definitions, wordPositions });
         setShowSolution(false);
         setSelectedDefinition(null);
@@ -120,7 +122,7 @@ export const CrosswordProvider = ({ children }) => {
         <CrosswordContext.Provider value={{
             grid, definitions, wordPositions, showSolution,
             handleNewPuzzle, handleToggleSolution, updateCell,
-            selectedDefinition, setActiveDefinition }}>
+            selectedDefinition, setActiveDefinition, setSize, setMaxWords }}>
             {children}
         </CrosswordContext.Provider>
     );

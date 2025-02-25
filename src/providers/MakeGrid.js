@@ -14,6 +14,38 @@ const MakeGrid = ({ size = 12, maxWords = 10 }) => {
         );
     };
 
+    const trimGrid = (grid) => {
+        const rows = grid.length;
+        const cols = grid[0].length;
+
+        // חיתוך שורות ריקות מלמעלה ומלמטה
+        let top = 0, bottom = rows - 1;
+        while (top < rows && grid[top].every(cell => cell.solution === null)) {
+            top++;
+        }
+        while (bottom >= 0 && grid[bottom].every(cell => cell.solution === null)) {
+            bottom--;
+        }
+
+        // חיתוך עמודות ריקות מצד ימין ושמאל
+        let left = 0, right = cols - 1;
+        while (left < cols && grid.every(row => row[left].solution === null)) {
+            left++;
+        }
+        while (right >= 0 && grid.every(row => row[right].solution === null)) {
+            right--;
+        }
+
+        // אם לא נותרו שורות או עמודות, תחזיר גריד ריק
+        if (top > bottom || left > right) {
+            return [];
+        }
+
+        // חיתוך הגריד
+        return grid.slice(top, bottom + 1).map(row => row.slice(left, right + 1));
+    };
+
+
     const canPlaceWord = (grid, word, row, col, isVertical) => {
         if (isVertical && row + word.length > size) return false;
         if (!isVertical && col + word.length > size) return false;
@@ -166,6 +198,9 @@ const MakeGrid = ({ size = 12, maxWords = 10 }) => {
                 }
             }
         }
+
+        // חיתוך שורות ועמודות ריקות
+        grid = trimGrid(grid);
 
         // מסדרים את ההגדרות לפי מאוזן/מאונך
         const formattedDefinitions = {
