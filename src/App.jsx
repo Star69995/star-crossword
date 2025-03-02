@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -7,22 +7,25 @@ import Block from './components/block'
 import MakeGrid from './providers/MakeGrid'
 import definitions from './assets/definitions.json';
 import Crossword from './components/Crossword'
-import { CrosswordProvider } from './providers/CrosswordContext'
+// import { CrosswordProvider } from './providers/CrosswordContext'
 
 import React from 'react';
+import CrosswordSetup from './components/CrosswordSetup'
+import { useCrossword } from './providers/CrosswordContext'
 
 
 
 
 function App() {
-  // const [showGrid, setShowGrid] = useState(false);
 
-  // const crossword = generateCrossword(definitions);
+  const { showSetup } = useCrossword();
 
   return (
-    <CrosswordProvider>
-      <Crossword />
-    </CrosswordProvider>
+
+      <>
+      {showSetup ? <CrosswordSetup /> : <Crossword />}
+      </>
+
   );
 }
 

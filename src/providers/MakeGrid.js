@@ -1,7 +1,11 @@
 import React from 'react';
-import definitions from '../assets/definitions.json';
+// import { useCrossword } from '../providers/CrosswordContext';
 
-const MakeGrid = ({ size = 12, maxWords = 10 }) => {
+
+const MakeGrid = ({ size = 12, maxWords = 10, definitionsList = [] }) => {
+
+    // const { definitionsList } = useCrossword();
+    // console.log(definitionsList);
 
     const createEmptyGrid = () => {
         return Array(size).fill().map(() =>
@@ -118,7 +122,7 @@ const MakeGrid = ({ size = 12, maxWords = 10 }) => {
         const wordPositions = [];
         let currentDefinitionNumber = 1;  // מונה להגדרות
 
-        const shuffledDefinitions = [...definitions.crossword]
+        const shuffledDefinitions = [...definitionsList]
             .sort(() => Math.random() - 0.5)
             .slice(0, maxWords);
 
@@ -225,11 +229,10 @@ const MakeGrid = ({ size = 12, maxWords = 10 }) => {
         // מיון ההגדרות לפי המספרים
         formattedDefinitions.across.sort((a, b) => a.number - b.number);
         formattedDefinitions.down.sort((a, b) => a.number - b.number);
-
-        // console.log("formattedDefinitions", formattedDefinitions);
+        
         return {
             grid,
-            definitions: formattedDefinitions,
+            definitionsUsed: formattedDefinitions,
             wordPositions
         };
     };

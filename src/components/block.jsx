@@ -13,7 +13,7 @@ const Block = ({ row, col }) => {
         if (inputValue === '' || /^[א-ת]$/.test(inputValue)) {
             updateCell(row, col, inputValue);
             // מציאת האות הבאה באותה הגדרה
-            moveToNextCell(row, col, cell.isVertical);
+            moveToNextCell(row, col, selectedDefinition.isVertical);
         }
     };
 
@@ -29,16 +29,61 @@ const Block = ({ row, col }) => {
             nextCol++;
         }
 
-        // אם הגעת לסוף ההגדרה, עבר להנחה הבאה
+        // if the next cell is not out of bounds, focus on it
         if (nextRow >= 0 && nextRow < grid.length && nextCol >= 0 && nextCol < grid[0].length) {
-            // console.log(nextRow, nextCol);
+            // console.log("in bounds");
+            
             const nextCell = document.querySelector(`[data-row="${nextRow}"][data-col="${nextCol}"]`);
-            // console.log(nextCell);
-            if (nextCell) {
+            if (nextCell && nextCell.disabled == false && !nextCell.hasAttribute('readonly')) {
                 nextCell.focus();
+                // console.log(nextCell);
+                // console.log(1);
+                
+                return
+            }
+            else
+            {
+                moveToNextCell(nextRow, nextCol, isVertical);
+                return
             }
         }
+        
+        
+        // console.log("out of bounds or black");
+        
+        // // look for the next empty cell
+        // for (let i = 0; i < grid.length; i++) {
+        //     for (let j = 0; j < grid[0].length; j++) {
+        //         if (grid[i][j].solution != null) {
+        //             const nextCell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+        //             // console.log(nextCell);
+                    
+        //             if (nextCell && nextCell.disabled && nextCell.value === '' && ! nextCell.hasAttribute('readonly')) {
+        //                 // console.log(nextCell);
+        //                 nextCell.focus();
+        //                 return
+        //             }
+        //         }
+        //     }
+        // }
+
+        // for (let i = 0; i < grid.length; i++) {
+        //     for (let j = 0; j < grid[0].length; j++) {
+        //         if (grid[i][j].solution != null) {
+        //             const nextCell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+        //             // console.log(nextCell);
+
+        //             if (nextCell && nextCell.disabled == false && ! nextCell.hasAttribute('readonly')) {
+        //                 // console.log(nextCell);
+        //                 nextCell.focus();
+        //                 return
+        //             }
+        //         }
+        //     }
+        // }
+        
     };
+    
     const handleClick = () => {
         if (cell.definition !== null) {
             setActiveDefinition(cell, null);

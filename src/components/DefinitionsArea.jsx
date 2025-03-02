@@ -2,9 +2,11 @@ import Definition from "./Definition";
 import { useCrossword } from "../providers/CrosswordContext";
 
 function DefinitionsArea() {
-    const { definitions } = useCrossword();
+    const { definitionsUsed } = useCrossword();
 
-    if (!definitions?.across || !definitions?.down) {
+    console.log(definitionsUsed);
+
+    if (!definitionsUsed?.across || !definitionsUsed?.down) {
         return (
             <div className="mt-6 space-y-2">
                 <h2>הגדרות:</h2>
@@ -21,7 +23,7 @@ function DefinitionsArea() {
             <div>
                 <h3>מאוזן:</h3>
                 <ul style={{ textAlign: "right", listStyle: 'none' }}>
-                    {definitions.across.map((def) => (
+                        {definitionsUsed.across.map((def) => (
                         <Definition
                             key={def.number}
                             definition={`${def.number}. ${def.text}`}
@@ -33,7 +35,7 @@ function DefinitionsArea() {
             <div>
                 <h3>מאונך:</h3>
                 <ul style={{ textAlign: "right", listStyle: 'none' }}>
-                    {definitions.down.map((def) => (
+                        {definitionsUsed.down.map((def) => (
                         <Definition
                             key={def.number}
                             definition={`${def.number}. ${def.text}`}

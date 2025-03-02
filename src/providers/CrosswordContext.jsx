@@ -1,23 +1,51 @@
 import { createContext, useContext, useState } from 'react';
 import MakeGrid from './MakeGrid';
+import definitions from '../assets/definitions.json';
 
 const CrosswordContext = createContext();
 
 export const useCrossword = () => useContext(CrosswordContext);
 
 export const CrosswordProvider = ({ children }) => {
-    const [gridSize, setSize] = useState(14);
+    const [definitionsList, setDefinitionsList] = useState(definitions.crossword);
+    
+    const [gridSize, setSize] = useState(15);
     const [gridMaxWords, setMaxWords] = useState(12);
-    const [{ grid, definitions, wordPositions }, setGridData] = useState(() => MakeGrid({ size: gridSize, maxWords: gridMaxWords }));
+    const [{ grid, definitionsUsed, wordPositions }, setGridData] = useState(() => MakeGrid({ size: gridSize, maxWords: gridMaxWords, definitionsList: definitionsList }));
     const [showSolution, setShowSolution] = useState(false);
     const [selectedDefinition, setSelectedDefinition] = useState(null); // שמירת ההגדרה הפעילה
+    
 
-    const handleNewPuzzle = () => {
-        const { grid, definitions, wordPositions } = MakeGrid({ size: gridSize, maxWords: gridMaxWords });
-        setGridData({ grid, definitions, wordPositions });
+    const handleNewPuzzle = (definitionsToUse = []) => {
+        // console.log(definitionsList);
+        if (definitionsToUse.length === 0) {
+            definitionsToUse = definitionsList;
+        }
+
+        
+        // console.log(definitionsToUse);
+        
+        const { grid, definitionsUsed, wordPositions } = MakeGrid({ size: gridSize, maxWords: gridMaxWords, definitionsList: definitionsToUse });
+        console.log(definitionsUsed);
+        
+        setGridData({ grid, definitionsUsed, wordPositions });
         setShowSolution(false);
         setSelectedDefinition(null);
+        
     };
+
+    const [showSetup, setShowSetup] = useState(false);
+    const handleNewCustomPuzzle = () => {
+        setShowSetup(true);
+    };
+
+    // const handleSetupSubmit = ({ size, maxWords, wordList }) => {
+    //     setSize(size);
+    //     setMaxWords(maxWords);
+    //     const { grid, definitionsUsed, wordPositions } = MakeGrid({ size, maxWords, wordList });
+    //     setGridData({ grid, definitionsUsed, wordPositions });
+    //     setShowSetup(false);
+    // };
 
     const handleToggleSolution = () => {
         setShowSolution((prev) => !prev);
@@ -28,7 +56,7 @@ export const CrosswordProvider = ({ children }) => {
         updatedGrid[row][col].value = value;
 
         // יצירת עותק מעודכן של ההגדרות
-        const updatedDefinitions = { ...definitions };
+        const updatedDefinitions = { ...definitionsUsed };
 
         updatedGrid[row][col].definitions.forEach((definition) => {
             const { definition: defText } = definition;
@@ -63,7 +91,7 @@ export const CrosswordProvider = ({ children }) => {
 
                 // עדכון סטטוס ההגדרה
                 const definitionCategory = isVertical ? "down" : "across";
-                const definitionEntry = definitions[definitionCategory].find(d => d.text === defText);
+                const definitionEntry = definitionsUsed[definitionCategory].find(d => d.text === defText);
 
                 if (definitionEntry) {
                     definitionEntry.isAnswered = isFullyAnswered.length === 0;
@@ -72,7 +100,7 @@ export const CrosswordProvider = ({ children }) => {
         });
 
         // עדכון ה- state
-        setGridData({ grid: updatedGrid, definitions: updatedDefinitions, wordPositions });
+        setGridData({ grid: updatedGrid, definitionsUsed: updatedDefinitions, wordPositions });
     };
 
 
@@ -86,7 +114,7 @@ export const CrosswordProvider = ({ children }) => {
                 return { ...cell, isHighlighted };
             })
         );
-        setGridData({ grid: newGrid, definitions, wordPositions });
+        setGridData({ grid: newGrid, definitionsUsed, wordPositions });
     };
 
 
@@ -120,9 +148,12 @@ export const CrosswordProvider = ({ children }) => {
 
     return (
         <CrosswordContext.Provider value={{
-            grid, definitions, wordPositions, showSolution,
-            handleNewPuzzle, handleToggleSolution, updateCell,
-            selectedDefinition, setActiveDefinition, setSize, setMaxWords }}>
+            grid, definitionsUsed, wordPositions, showSolution,
+            handleNewPuzzle, handleNewCustomPuzzle, handleToggleSolution, updateCell,
+            selectedDefinition, setActiveDefinition, setSize, setMaxWords, gridSize, gridMaxWords, 
+            showSetup,
+            setShowSetup,
+            definitionsList, setDefinitionsList }}>
             {children}
         </CrosswordContext.Provider>
     );
