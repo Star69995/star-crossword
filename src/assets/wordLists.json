@@ -1,0 +1,27 @@
+{
+    "default": {
+        "name": "בדיקה",
+            "words": [
+                { "solution": "תפוח", "definition": "פרי אדום או ירוק" },
+                { "solution": "ירח", "definition": "מלווה את כדור הארץ" }
+            ]
+    },
+    "animals": {
+        "name": "בעלי חיים",
+            "words": [
+                { "solution": "חתול", "definition": "חיית מחמד פרוותית" },
+                { "solution": "כלב", "definition": "חברו הטוב של האדם" }
+            ]
+    },
+    "countries": {
+        "name": "מדינות",
+            "words": [
+                { "solution": "ישראל", "definition": "מדינה במזרח התיכון" },
+                { "solution": "צרפת", "definition": "מדינה באירופה" }
+            ]
+    },
+    "custom": {
+        "name": "מותאם אישית",
+            "words": ""
+    }
+}

@@ -1,11 +1,11 @@
 import React from 'react';
-import { useCrossword } from '../providers/CrosswordContext';
+import { useCrossword } from '../../providers/CrosswordContext';
 function CurrentDef() {
-    const {selectedDefinition} = useCrossword();
+    const { selectedDefinition } = useCrossword();
 
-    const def = selectedDefinition ?.definition || 'כאן תופיעה ההגדרה המסומנת';
+    const def = selectedDefinition?.definition || 'כאן תופיעה ההגדרה המסומנת';
     // console.log(def);
-    return ( 
+    return (
         <div
             className="p-2 border border-info shadow-lg bg-info-subtle">
             <span>{def}</span>

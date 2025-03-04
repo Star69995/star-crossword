@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import MakeGrid from './MakeGrid';
+import MakeGrid from '../utils/MakeGrid';
 import definitions from '../assets/definitions.json';
 
 const CrosswordContext = createContext();
@@ -17,16 +17,11 @@ export const CrosswordProvider = ({ children }) => {
     
 
     const handleNewPuzzle = (definitionsToUse = []) => {
-        // console.log(definitionsList);
         if (definitionsToUse.length === 0) {
             definitionsToUse = definitionsList;
         }
-
-        
-        // console.log(definitionsToUse);
         
         const { grid, definitionsUsed, wordPositions } = MakeGrid({ size: gridSize, maxWords: gridMaxWords, definitionsList: definitionsToUse });
-        console.log(definitionsUsed);
         
         setGridData({ grid, definitionsUsed, wordPositions });
         setShowSolution(false);

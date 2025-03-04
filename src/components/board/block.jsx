@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useCrossword } from '../providers/CrosswordContext';
+import { useCrossword } from '../../providers/CrosswordContext';
 
 const Block = ({ row, col }) => {
     const { grid, showSolution, updateCell, selectedDefinition, setActiveDefinition } = useCrossword();
@@ -32,32 +32,31 @@ const Block = ({ row, col }) => {
         // if the next cell is not out of bounds, focus on it
         if (nextRow >= 0 && nextRow < grid.length && nextCol >= 0 && nextCol < grid[0].length) {
             // console.log("in bounds");
-            
+
             const nextCell = document.querySelector(`[data-row="${nextRow}"][data-col="${nextCol}"]`);
             if (nextCell && nextCell.disabled == false && !nextCell.hasAttribute('readonly')) {
                 nextCell.focus();
                 // console.log(nextCell);
                 // console.log(1);
-                
+
                 return
             }
-            else
-            {
+            else {
                 moveToNextCell(nextRow, nextCol, isVertical);
                 return
             }
         }
-        
-        
+
+
         // console.log("out of bounds or black");
-        
+
         // // look for the next empty cell
         // for (let i = 0; i < grid.length; i++) {
         //     for (let j = 0; j < grid[0].length; j++) {
         //         if (grid[i][j].solution != null) {
         //             const nextCell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
         //             // console.log(nextCell);
-                    
+
         //             if (nextCell && nextCell.disabled && nextCell.value === '' && ! nextCell.hasAttribute('readonly')) {
         //                 // console.log(nextCell);
         //                 nextCell.focus();
@@ -81,9 +80,9 @@ const Block = ({ row, col }) => {
         //         }
         //     }
         // }
-        
+
     };
-    
+
     const handleClick = () => {
         if (cell.definition !== null) {
             setActiveDefinition(cell, null);

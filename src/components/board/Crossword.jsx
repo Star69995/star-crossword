@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import Grid from './Grid';
 // import MakeGrid from '../providers/MakeGrid.js';
 import DefinitionsArea from './DefinitionsArea';
-import { useCrossword, CrosswordProvider } from '../providers/CrosswordContext.jsx';
+import { useCrossword, CrosswordProvider } from '../../providers/CrosswordContext.jsx';
 import CurrentDef from './CurrentDef.jsx';
-import MakeGrid from '../providers/MakeGrid.js';
+// import MakeGrid from '../../providers/MakeGrid.js';
 
 const Crossword = () => {
-    const { grid, definitions, showSolution, handleNewPuzzle, handleNewCustomPuzzle,handleToggleSolution } = useCrossword();
+    const { grid, definitions, showSolution, handleNewPuzzle, handleNewCustomPuzzle, handleToggleSolution } = useCrossword();
 
     return (
         <div className="p-6 border rounded-lg shadow-lg">

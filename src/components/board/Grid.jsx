@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Block from './block';
-import { useCrossword } from "../providers/CrosswordContext";
+import { useCrossword } from "../../providers/CrosswordContext";
 
 function Grid() {
     const { grid } = useCrossword();
 
     return (
-        <table style={{  
+        <table style={{
             borderCollapse: 'collapse',
             direction: 'rtl',
             margin: 'auto'
@@ -20,7 +20,7 @@ function Grid() {
                                 height: '40px',
                                 border: '2px solid black', // Add border to each cell
                                 padding: 0 // Remove default padding
-}}>
+                            }}>
                                 <Block
                                     col={colIndex}
                                     row={rowIndex}

@@ -1,4 +1,4 @@
-import { useCrossword } from '../providers/CrosswordContext';
+import { useCrossword } from '../../providers/CrosswordContext';
 import React, { useState } from 'react';
 
 function Definition({ definition }) {
@@ -17,7 +17,7 @@ function Definition({ definition }) {
 
     return (
         <li
-            onClick={() => setActiveDefinition( null, cleanedDefinition )}
+            onClick={() => setActiveDefinition(null, cleanedDefinition)}
             style={{
                 backgroundColor: isActive ? 'rgb(209, 224, 250)' : 'transparent',
                 cursor: 'pointer',
