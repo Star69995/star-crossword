@@ -1,46 +1,110 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import MakeGrid from '../utils/MakeGrid';
-import definitions from '../assets/definitions.json';
+import wordLists from '../utils/wordLists';
 
 const CrosswordContext = createContext();
 
 export const useCrossword = () => useContext(CrosswordContext);
 
 export const CrosswordProvider = ({ children }) => {
-    const [definitionsList, setDefinitionsList] = useState(definitions.crossword);
+    // const [definitionsList, setDefinitionsList] = useState(wordLists.default.words);
     
-    const [gridSize, setSize] = useState(15);
-    const [gridMaxWords, setMaxWords] = useState(12);
-    const [{ grid, definitionsUsed, wordPositions }, setGridData] = useState(() => MakeGrid({ size: gridSize, maxWords: gridMaxWords, definitionsList: definitionsList }));
+    // const [gridSize, setSize] = useState(15);
+    // const [gridMaxWords, setMaxWords] = useState(12);
+    // const [{ grid, definitionsUsed, wordPositions }, setGridData] = useState(() => MakeGrid({ size: gridSize, maxWords: gridMaxWords, definitionsList: definitionsList }));
+    // const [showSolution, setShowSolution] = useState(false);
+    // const [selectedDefinition, setSelectedDefinition] = useState(null); // שמירת ההגדרה הפעילה
+
+    // const [showSetup, setShowSetup] = useState(false);
+    
+    // // Load saved state from local storage
+    // useEffect(() => {
+    //     const savedState = JSON.parse(localStorage.getItem('crosswordState'));
+    //     if (savedState) {
+    //         // console.log('savedState:', savedState);
+    //         setGridData(savedState.gridData);
+    //         setDefinitionsList(savedState.definitionsList);
+    //         setSize(savedState.gridSize);
+    //         setMaxWords(savedState.gridMaxWords);
+    //     }
+    // }, []);
+
+    const [definitionsList, setDefinitionsList] = useState(() => {
+        const savedState = JSON.parse(localStorage.getItem('crosswordState'));
+        return savedState ? savedState.definitionsList : wordLists.default.words;
+    });
+
+    const [gridSize, setSize] = useState(() => {
+        const savedState = JSON.parse(localStorage.getItem('crosswordState'));
+        return savedState ? savedState.gridSize : 15;
+    });
+
+    const [gridMaxWords, setMaxWords] = useState(() => {
+        const savedState = JSON.parse(localStorage.getItem('crosswordState'));
+        return savedState ? savedState.gridMaxWords : 12;
+    });
+
+    const [{ grid, definitionsUsed, wordPositions }, setGridData] = useState(() => {
+        const savedState = JSON.parse(localStorage.getItem('crosswordState'));
+        if (savedState) {
+            return savedState.gridData;
+        } else {
+            return MakeGrid({
+                size: gridSize,
+                maxWords: gridMaxWords,
+                definitionsList: definitionsList,
+            });
+        }
+    });
+
     const [showSolution, setShowSolution] = useState(false);
-    const [selectedDefinition, setSelectedDefinition] = useState(null); // שמירת ההגדרה הפעילה
-    
+    const [selectedDefinition, setSelectedDefinition] = useState(null); // Active definition
+    const [showSetup, setShowSetup] = useState(false);
+
+    useEffect(() => {
+        const savedState = JSON.parse(localStorage.getItem('crosswordState'));
+        if (savedState) {
+            setGridData(savedState.gridData);
+            setDefinitionsList(savedState.definitionsList);
+            setSize(savedState.gridSize);
+            setMaxWords(savedState.gridMaxWords);
+            if (savedState.selectedDefinition) {
+                setActiveDefinition(null, savedState.selectedDefinition.definition); // הוספתי את שמירת ההגדרה המסמנת
+            }
+        }
+    }, []);
+
+
+
+    // Save state to local storage whenever grid or other important state changes
+    useEffect(() => {
+        const stateToSave = {
+            gridData: { grid, definitionsUsed, wordPositions },
+            definitionsList,
+            gridSize,
+            gridMaxWords,
+            selectedDefinition, // הוספתי את ההגדרה המסמנת לשמירה
+        };
+        localStorage.setItem('crosswordState', JSON.stringify(stateToSave));
+    }, [grid, definitionsUsed, wordPositions, definitionsList, gridSize, gridMaxWords, selectedDefinition]); // הוספתי את selectedDefinition למעקב
+
 
     const handleNewPuzzle = (definitionsToUse = []) => {
         if (definitionsToUse.length === 0) {
             definitionsToUse = definitionsList;
         }
-        
+
         const { grid, definitionsUsed, wordPositions } = MakeGrid({ size: gridSize, maxWords: gridMaxWords, definitionsList: definitionsToUse });
-        
+
         setGridData({ grid, definitionsUsed, wordPositions });
         setShowSolution(false);
         setSelectedDefinition(null);
-        
+
     };
 
-    const [showSetup, setShowSetup] = useState(false);
     const handleNewCustomPuzzle = () => {
         setShowSetup(true);
     };
-
-    // const handleSetupSubmit = ({ size, maxWords, wordList }) => {
-    //     setSize(size);
-    //     setMaxWords(maxWords);
-    //     const { grid, definitionsUsed, wordPositions } = MakeGrid({ size, maxWords, wordList });
-    //     setGridData({ grid, definitionsUsed, wordPositions });
-    //     setShowSetup(false);
-    // };
 
     const handleToggleSolution = () => {
         setShowSolution((prev) => !prev);
@@ -98,8 +162,6 @@ export const CrosswordProvider = ({ children }) => {
         setGridData({ grid: updatedGrid, definitionsUsed: updatedDefinitions, wordPositions });
     };
 
-
-
     const updateHighlightedCells = (definition) => {
         const newGrid = grid.map(row =>
             row.map(cell => {
@@ -112,13 +174,13 @@ export const CrosswordProvider = ({ children }) => {
         setGridData({ grid: newGrid, definitionsUsed, wordPositions });
     };
 
-
     const getDefinitionDirection = (definition) => {
         const word = wordPositions.find(word => word.definition === definition);
         return word ? word.isVertical : null;
     };
 
     const setActiveDefinition = (cell=null, inputDefinition=null) => {
+        // console.log(inputDefinition);
         if (cell) {
             if (cell.definitions.length === 1) {
                 setSelectedDefinition(cell.definitions[0]);
@@ -133,8 +195,11 @@ export const CrosswordProvider = ({ children }) => {
             }
         }
         else if (inputDefinition) {
+            console.log(inputDefinition);
+            
             const newDefinition = { definition: inputDefinition, isVertical: getDefinitionDirection(inputDefinition) };
-            // console.log("def", newDefinition);
+            console.log(newDefinition);
+            
             setSelectedDefinition(newDefinition);
             updateHighlightedCells(newDefinition);
         }

@@ -1,6 +1,6 @@
-import definitions from '../assets/definitions.json';
-import countries from '../assets/countries.json';
-import animals from '../assets/animals.json';
+import definitions from '../assets/crossword_definitions_lists/test.json';
+import countries from '../assets/crossword_definitions_lists/countries.json';
+import animals from '../assets/crossword_definitions_lists/animals.json';
 
 const wordLists = {
 	default: { name: "בדיקה", words: definitions.crossword
