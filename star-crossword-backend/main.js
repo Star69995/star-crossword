@@ -34,6 +34,7 @@ app.use(cors(corsOptions))
 app.use("/api/users", require("./routes/user"))
 app.use("/api/login", require("./routes/auth"))
 app.use("/api/crosswords", require("./routes/crossword"))
+app.use("/api/wordlists", require("./routes/wordList"))
 
 
 mongoose.connect(process.env.MONGO_URI).then(() => {

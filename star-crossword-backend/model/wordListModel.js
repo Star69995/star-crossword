@@ -1,7 +1,7 @@
 const _ = require("lodash")
 const mongoose = require("mongoose")
 
-const crosswordSchema = new mongoose.Schema({
+const wordListSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -15,7 +15,19 @@ const crosswordSchema = new mongoose.Schema({
         minlength: 2,
         maxlength: 1024
     },
-    user_id: 
+    words: [
+        {
+            solution: {
+                type: String,
+                required: true
+            },
+            definition: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+    creator:
     {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -41,43 +53,21 @@ const crosswordSchema = new mongoose.Schema({
     }
 })
 
-cardSchema.pre("validate", async function (next) {
-    const generateUniqueBizNumber = async () => {
-        const number = _.random(100, 9_999_999_999);
-        const exists = await this.constructor.exists({ bizNumber: number });
-        return exists ? generateUniqueBizNumber() : number;
-    };
-    this.bizNumber = await generateUniqueBizNumber();
-    next();
-});
 
-
-const Card = mongoose.model("Card", cardSchema, "cards")
+const WordList = mongoose.model("WordList", wordListSchema, "WordLists")
 
 const Joi = require("joi")
 
-const cardValidation = Joi.object({
+const wordListValidation = Joi.object({
     title: Joi.string().min(2).max(255).required(),
-    subtitle: Joi.string().min(2).max(255).required(),
-    description: Joi.string().min(2).max(1024).required(),
-    address: Joi.object({
-        state: Joi.string().max(255),
-        country: Joi.string().min(2).max(255).required(),
-        city: Joi.string().min(2).max(255).required(),
-        street: Joi.string().min(2).max(255).required(),
-        houseNumber: Joi.string().min(1).max(255).required(),
-        zip: Joi.string().max(255)
-    }).required(),
-    web: Joi.string().uri().min(2).max(255),
-    email: Joi.string().min(6).max(255).required().email(),
-    phone: Joi.string()
-        .pattern(/^[0-9]{9,10}$/)
-        .required(),
-    image: Joi.object({
-        url: Joi.string().uri().max(1024),
-        alt: Joi.string().max(255)
-    }),
-    likes: Joi.array().items(Joi.string().length(24).hex())
+    description: Joi.string(),
+    words: Joi.array().items(
+        Joi.object({
+            solution: Joi.string().required(),
+            definition: Joi.string().required()
+        })
+    ).min(2).required(),
+    isPublic: Joi.boolean(),
 }).required()
 
-module.exports = { Card, cardValidation }
+module.exports = { WordList, wordListValidation }

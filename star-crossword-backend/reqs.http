@@ -646,17 +646,44 @@ Content-Type: application/json
 get {{local}}/api/crosswords/my-crosswords
 auth-token: {{token}}
 
+
 ###
 PATCH {{local}}/api/crosswords/{{crossword_id}}/like
 auth-token: {{token}}
+
 
 ###
 put {{local}}/api/crosswords/{{crossword_id}}/solved
 auth-token: {{token}}
 
+
 ### 
 DELETE {{local}}/api/crosswords/{{crossword_id}}/solved
 auth-token: {{token}}
+
+
 ###
 PATCH {{local}}/api/crosswords/{{crossword_id}}/visibility
 auth-token: {{token}}
+
+
+###
+post {{local}}/api/wordLists
+auth-token: {{token}}
+Content-Type: application/json
+
+{
+    "title": "Countries",
+    "description": "List of countries",
+    "words": [
+        {
+        "solution": "ישראל",
+        "definition": "מדינה במזרח התיכון"
+        },
+        {
+        "solution": "צרפת",
+        "definition": "מדינה באירופה"
+        }
+    ],
+    "isPublic": true
+}
