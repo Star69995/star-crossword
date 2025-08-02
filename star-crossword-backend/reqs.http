@@ -1,0 +1,662 @@
+@local=http://localhost:3000
+
+@id=6864ff1a0c0ed659a86ac77a
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODY0ZmYxYTBjMGVkNjU5YTg2YWM3N2EiLCJpc0NvbnRlbnRDcmVhdG9yIjp0cnVlLCJpYXQiOjE3NTE0NDkzNzh9.PjoFhzfkC_W3Vyh8QYQWcswNxmXmwjuJUnU6qb8dKXQ
+
+
+###
+# register
+POST {{local}}/api/users/
+Content-Type: application/json
+
+    {
+        "userName": "power",
+        "email": "eh4tf56jk@example.com",
+        "password": "123456",
+        "isContentCreator": true
+    }
+
+
+###
+# login
+POST {{local}}/api/login/
+Content-Type: application/json
+
+    {
+        "email": "eh4tf56jk@example.com",
+        "password": "123456"
+    }
+
+
+###
+PATCH {{local}}/api/users/685a97ad35ff62a918a8f399
+Content-Type: application/json
+auth-token: {{token}}
+
+    {
+        "isContentCreator": false
+    }
+
+
+###
+PUT {{local}}/api/users/685a97ad35ff62a918a8f399
+Content-Type: application/json
+auth-token: {{token}}
+
+    {
+        "userName": "power22",
+        "email": "eh4tf56jk@example.com",
+        "password": "123456",
+        "isContentCreator": true
+    }
+
+
+###
+# get user
+GET {{local}}/api/users/{{id}}
+auth-token: {{token}}
+
+
+###
+# delete user
+DELETE {{local}}/api/users/{{id}}
+auth-token: {{token}}
+
+
+#####################################################################
+POST {{local}}/api/crosswords/
+Content-Type: application/json
+auth-token: {{token}}
+
+    {
+        "title": "test",
+        "description": "test",
+        "isPublic": false,
+        "crosswordObject": {
+            "grid": [
+                [
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    }
+                ],
+                [
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": "C"
+                    },
+                    {
+                        "solution": "A"
+                    },
+                    {
+                        "solution": "T"
+                    }
+                ],
+                [
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    }
+                ]
+            ],
+            "definitionsUsed": {
+                "across": [
+                    {
+                        "number": 1,
+                        "text": "A small domestic animal",
+                        "isAnswered": false
+                    }
+                ],
+                "down": [
+                    {
+                        "number": 2,
+                        "text": "Creative expression",
+                        "isAnswered": false
+                    },
+                    {
+                        "number": 3,
+                        "text": "Sticky substance from coal",
+                        "isAnswered": false
+                    }
+                ]
+            },
+            "wordPositions": [
+                {
+                    "wordIndex": 0,
+                    "definition": "A small domestic animal",
+                    "row": 1,
+                    "col": 1,
+                    "isVertical": false,
+                    "definitionNumber": 1
+                },
+                {
+                    "wordIndex": 1,
+                    "definition": "Creative expression",
+                    "row": 0,
+                    "col": 2,
+                    "isVertical": true,
+                    "definitionNumber": 2
+                },
+                {
+                    "wordIndex": 2,
+                    "definition": "Sticky substance from coal",
+                    "row": 0,
+                    "col": 3,
+                    "isVertical": true,
+                    "definitionNumber": 3
+                }
+            ]
+        }
+    }
+
+
+###
+post {{local}}/api/crosswords/
+Content-Type: application/json
+auth-token: {{token}}
+
+    {
+        "title": "test2",
+        "description": "test2",
+        "crosswordObject": {
+            "gridData": {
+                "grid": [
+                    [
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": "ה",
+                            "definitions": [
+                                {
+                                    "definition": "הים הגדול של ישראל",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": 2,
+                            "wordIndex": 1
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        }
+                    ],
+                    [
+                        {
+                            "solution": "א",
+                            "definitions": [
+                                {
+                                    "definition": "היבשת שבה נמצאת מצרים",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": 3,
+                            "wordIndex": 2
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": "ת",
+                            "definitions": [
+                                {
+                                    "definition": "הים הגדול של ישראל",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 1
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": "ב",
+                            "definitions": [
+                                {
+                                    "definition": "החיה הכי מהירה ביבשה",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": 4,
+                            "wordIndex": 3
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        }
+                    ],
+                    [
+                        {
+                            "solution": "פ",
+                            "definitions": [
+                                {
+                                    "definition": "היבשת שבה נמצאת מצרים",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 2
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": "י",
+                            "definitions": [
+                                {
+                                    "definition": "הים הגדול של ישראל",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 1
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": "ר",
+                            "definitions": [
+                                {
+                                    "definition": "החיה הכי מהירה ביבשה",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 3
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        }
+                    ],
+                    [
+                        {
+                            "solution": "ר",
+                            "definitions": [
+                                {
+                                    "definition": "היבשת שבה נמצאת מצרים",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 2
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": "כ",
+                            "definitions": [
+                                {
+                                    "definition": "הים הגדול של ישראל",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 1
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": "ד",
+                            "definitions": [
+                                {
+                                    "definition": "החיה הכי מהירה ביבשה",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 3
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        },
+                        {
+                            "solution": null,
+                            "definitions": [],
+                            "isHighlighted": false,
+                            "definitionNumber": null
+                        }
+                    ],
+                    [
+                        {
+                            "solution": "י",
+                            "definitions": [
+                                {
+                                    "definition": "בירת ישראל",
+                                    "isVertical": false
+                                },
+                                {
+                                    "definition": "היבשת שבה נמצאת מצרים",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": 1,
+                            "wordIndex": 2
+                        },
+                        {
+                            "solution": "ר",
+                            "definitions": [
+                                {
+                                    "definition": "בירת ישראל",
+                                    "isVertical": false
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 0
+                        },
+                        {
+                            "solution": "ו",
+                            "definitions": [
+                                {
+                                    "definition": "בירת ישראל",
+                                    "isVertical": false
+                                },
+                                {
+                                    "definition": "הים הגדול של ישראל",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 1
+                        },
+                        {
+                            "solution": "ש",
+                            "definitions": [
+                                {
+                                    "definition": "בירת ישראל",
+                                    "isVertical": false
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 0
+                        },
+                        {
+                            "solution": "ל",
+                            "definitions": [
+                                {
+                                    "definition": "בירת ישראל",
+                                    "isVertical": false
+                                },
+                                {
+                                    "definition": "החיה הכי מהירה ביבשה",
+                                    "isVertical": true
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 3
+                        },
+                        {
+                            "solution": "י",
+                            "definitions": [
+                                {
+                                    "definition": "בירת ישראל",
+                                    "isVertical": false
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 0
+                        },
+                        {
+                            "solution": "ם",
+                            "definitions": [
+                                {
+                                    "definition": "בירת ישראל",
+                                    "isVertical": false
+                                }
+                            ],
+                            "isHighlighted": false,
+                            "definitionNumber": null,
+                            "wordIndex": 0
+                        }
+                    ]
+                ]
+            }
+        }
+    }
+
+
+###
+@crossword_id=68694d6b6b772204b7ac83ab
+
+
+###
+get {{local}}/api/crosswords/{{crossword_id}}
+auth-token: {{token}}
+
+
+###
+DELETE {{local}}/api/crosswords/{{crossword_id}}
+auth-token: {{token}}
+
+
+###
+get {{local}}/api/crosswords/
+
+
+###
+put {{local}}/api/crosswords/{{crossword_id}}
+auth-token: {{token}}
+Content-Type: application/json
+
+    {
+        "title": "test",
+        "description": "test",
+        "isPublic": false,
+        "crosswordObject": {
+            "grid": [
+                [
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    }
+                ],
+                [
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": "C"
+                    },
+                    {
+                        "solution": "A"
+                    },
+                    {
+                        "solution": "T"
+                    }
+                ],
+                [
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    },
+                    {
+                        "solution": null
+                    }
+                ]
+            ],
+            "definitionsUsed": {
+                "across": [
+                    {
+                        "number": 1,
+                        "text": "A small domestic animal",
+                        "isAnswered": false
+                    }
+                ],
+                "down": [
+                    {
+                        "number": 2,
+                        "text": "Creative expression",
+                        "isAnswered": false
+                    },
+                    {
+                        "number": 3,
+                        "text": "Sticky substance from coal",
+                        "isAnswered": false
+                    }
+                ]
+            },
+            "wordPositions": [
+                {
+                    "wordIndex": 0,
+                    "definition": "A small domestic animal",
+                    "row": 1,
+                    "col": 1,
+                    "isVertical": false,
+                    "definitionNumber": 1
+                },
+                {
+                    "wordIndex": 1,
+                    "definition": "Creative expression",
+                    "row": 0,
+                    "col": 2,
+                    "isVertical": true,
+                    "definitionNumber": 2
+                },
+                {
+                    "wordIndex": 2,
+                    "definition": "Sticky substance from coal",
+                    "row": 0,
+                    "col": 3,
+                    "isVertical": true,
+                    "definitionNumber": 3
+                }
+            ]
+        }
+    }
+
+
+###
+get {{local}}/api/crosswords/my-crosswords
+auth-token: {{token}}
+
+###
+PATCH {{local}}/api/crosswords/{{crossword_id}}/like
+auth-token: {{token}}
+
+###
+put {{local}}/api/crosswords/{{crossword_id}}/solved
+auth-token: {{token}}
+
+### 
+DELETE {{local}}/api/crosswords/{{crossword_id}}/solved
+auth-token: {{token}}
+###
+PATCH {{local}}/api/crosswords/{{crossword_id}}/visibility
+auth-token: {{token}}
