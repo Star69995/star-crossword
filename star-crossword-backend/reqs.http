@@ -685,5 +685,40 @@ Content-Type: application/json
         "definition": "מדינה באירופה"
         }
     ],
+    "isPublic": false
+}
+
+###
+get {{local}}/api/wordLists
+auth-token: {{token}}
+
+
+###
+@list_id=688de84e220b5961c34f97cf
+get {{local}}/api/wordLists/{{list_id}}
+# PATCH {{local}}/api/wordLists/{{list_id}}/visibility
+# auth-token: {{token}}
+
+####
+get {{local}}/api/wordLists/my-wordLists
+auth-token: {{token}}
+###
+put {{local}}/api/wordLists/{{list_id}}
+auth-token: {{token}}
+Content-Type: application/json
+
+{
+    "title": "Countries1",
+    "description": "List of countries",
+    "words": [
+        {
+        "solution": "ישראל",
+        "definition": "מדינה במזרח התיכון"
+        },
+        {
+        "solution": "צרפת",
+        "definition": "מדינה באירופה"
+        }
+    ],
     "isPublic": true
 }
