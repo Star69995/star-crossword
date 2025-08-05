@@ -1,4 +1,3 @@
-// pages/MyCrosswords.jsx
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CrosswordCard from '../components/cards/CrosswordCard'
@@ -17,15 +16,18 @@ const MyCrosswords = () => {
 
     const fetchCrosswords = async () => {
         try {
-            setLoading(true)
-            const data = await getMyCrosswords()
-            setCrosswords(data)
+            setLoading(true);
+            const data = await getMyCrosswords();
+            // Ensure data is an array; if not, set to empty array
+            setCrosswords(Array.isArray(data) ? data : []);
         } catch (error) {
-            console.error('Error fetching crosswords:', error)
+            console.error('Error fetching crosswords:', error);
+            // On error, set to empty array as fallback
+            setCrosswords([]);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     const handleDelete = async (crosswordId) => {
         if (window.confirm('האם אתה בטוח שברצונך למחוק את התשבץ?')) {
@@ -105,17 +107,18 @@ const MyCrosswords = () => {
                 </div>
             ) : (
                 <div className="row g-4">
-                    {filteredCrosswords.map(crossword => (
-                        <div key={crossword.id} className="col-lg-4 col-md-6">
-                            <CrosswordCard
-                                crossword={crossword}
-                                showActions={true}
-                                onUpdate={fetchCrosswords}
-                                onDelete={() => handleDelete(crossword.id)}
-                            />
-                        </div>
-                    ))}
-                    {filteredCrosswords.length === 0 && (
+                    {Array.isArray(filteredCrosswords) && filteredCrosswords.length > 0 ? (
+                        filteredCrosswords.map(crossword => (
+                            <div key={crossword.id} className="col-lg-4 col-md-6">
+                                <CrosswordCard
+                                    crossword={crossword}
+                                    showActions={true}
+                                    onUpdate={fetchCrosswords}
+                                    onDelete={() => handleDelete(crossword.id)}
+                                />
+                            </div>
+                        ))
+                    ) : (
                         <div className="col-12 text-center py-5">
                             <div className="text-muted">
                                 <i className="bi bi-puzzle fs-1 d-block mb-3"></i>

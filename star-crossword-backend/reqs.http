@@ -3,7 +3,8 @@
 @id=6864ff1a0c0ed659a86ac77a
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODY0ZmYxYTBjMGVkNjU5YTg2YWM3N2EiLCJpc0NvbnRlbnRDcmVhdG9yIjp0cnVlLCJpYXQiOjE3NTE0NDkzNzh9.PjoFhzfkC_W3Vyh8QYQWcswNxmXmwjuJUnU6qb8dKXQ
 
-
+get {{local}}/api/users/me
+auth-token: {{token}}
 ###
 # register
 POST {{local}}/api/users/

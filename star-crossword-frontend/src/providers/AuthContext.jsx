@@ -1,61 +1,81 @@
-// providers/AuthContext.jsx
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { login as apiLogin, register as apiRegister, getCurrentUser } from '../services/api'
+import PropTypes from 'prop-types';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { login as apiLogin, register as apiRegister, getCurrentUser } from '../services/api';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export const useAuth = () => {
-    const context = useContext(AuthContext)
+    const context = useContext(AuthContext);
     if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider')
+        throw new Error('useAuth must be used within an AuthProvider');
     }
-    return context
-}
+    return context;
+};
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        checkAuthStatus()
-    }, [])
+        checkAuthStatus();
+    }, []);
 
     const checkAuthStatus = async () => {
         try {
-            const token = localStorage.getItem('token')
+            const token = localStorage.getItem('token');
             if (token) {
-                const userData = await getCurrentUser()
-                setUser(userData)
+                const userData = await getCurrentUser();
+                if (userData) {
+                    setUser(userData);
+                } else {
+                    console.log('No user data returned, clearing token.');
+                    localStorage.removeItem('token');
+                }
+            } else {
+                console.log('No token found in localStorage.');
             }
         } catch (error) {
-            localStorage.removeItem('token')
+            console.error('Error checking auth status:', error);
+            localStorage.removeItem('token');
+            setUser(null);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     const login = async (email, password) => {
-        const response = await apiLogin(email, password)
-        localStorage.setItem('token', response.token)
-        setUser(response.user)
-        return response
-    }
+        try {
+            const response = await apiLogin(email, password);
+            localStorage.setItem('token', response.token);
+            setUser(response.user);
+            return response;
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
+        }
+    };
 
     const register = async (userData) => {
-        const response = await apiRegister(userData)
-        localStorage.setItem('token', response.token)
-        setUser(response.user)
-        return response
-    }
+        try {
+            const response = await apiRegister(userData);
+            localStorage.setItem('token', response.token);
+            setUser(response.user);
+            console.log('Registration successful, user set:', response.user); // Debug registration
+            return response;
+        } catch (error) {
+            console.error('Registration error:', error);
+            throw error;
+        }
+    };
 
     const logout = () => {
-        localStorage.removeItem('token')
-        setUser(null)
-    }
+        localStorage.removeItem('token');
+        setUser(null);
+    };
 
     const updateUser = (updatedUser) => {
-        setUser(updatedUser)
-    }
+        setUser(updatedUser);
+    };
 
     const value = {
         user,
@@ -63,12 +83,12 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         updateUser,
-        loading
-    }
+        loading,
+    };
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};

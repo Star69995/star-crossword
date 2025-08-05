@@ -11,16 +11,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token')
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-})
-
-// Add auth token to requests
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`
+        config.headers["auth-token"] = token;
     }
     return config
 })
@@ -29,6 +20,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        console.log('error: ', error);
         if (error.response?.status === 401) {
             localStorage.removeItem('token')
             window.location.href = '/login'
@@ -49,7 +41,6 @@ export const login = async (email, password) => {
 }
 
 export const getCurrentUser = async () => {
-    // You might need to adjust this endpoint based on your backend
     const response = await api.get('/users/me')
     return response.data
 }
@@ -60,16 +51,14 @@ export const updateProfile = async (userId, profileData) => {
 }
 
 // Crossword endpoints
-export const getCrosswords = async (params = {}) => {
-    // This endpoint doesn't exist in your API, you might need to add it
-    // For now, using wordLists endpoint as alternative
-    const response = await api.get('/wordLists', { params })
-    return response.data
+export const getCrosswords = async () => {
+    const response = await api.get('/crosswords')
+    return response.data.crosswords
 }
 
 export const getCrosswordById = async (id) => {
     const response = await api.get(`/crosswords/${id}`)
-    return response.data
+    return response.data.crossword
 }
 
 export const getMyCrosswords = async () => {

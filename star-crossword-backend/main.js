@@ -18,25 +18,6 @@ app.use(cors({
     credentials: true, // If you use cookies for auth
 }));
 
-// Configure CORS with authorized origins only
-// const corsOptions = {
-//     origin: function (origin, callback) {
-//         const allowedOrigins = [
-//             `http://localhost:${port}`,
-//         ];
-
-//         // Allow requests with no origin (like mobile apps or Postman)
-//         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-//             callback(null, true)
-//         } else {
-//             callback(new Error('Not allowed by CORS'))
-//         }
-//     },
-//     optionsSuccessStatus: 200
-// }
-// 
-// app.use(cors(corsOptions))
-
 
 app.use("/api/users", require("./routes/user"))
 app.use("/api/login", require("./routes/auth"))

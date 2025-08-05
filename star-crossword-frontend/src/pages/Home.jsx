@@ -6,26 +6,23 @@ import { getCrosswords } from '../services/api'
 const Home = () => {
     const [crosswords, setCrosswords] = useState([])
     const [loading, setLoading] = useState(true)
-    const [filter, setFilter] = useState('all')
 
     useEffect(() => {
         fetchCrosswords()
-    }, [filter])
+    }, [])
 
     const fetchCrosswords = async () => {
         try {
-            setLoading(true)
-            const data = await getCrosswords({
-                isPublic: true,
-                difficulty: filter === 'all' ? undefined : filter
-            })
-            setCrosswords(data)
+            setLoading(true);
+            const data = await getCrosswords();
+            setCrosswords(Array.isArray(data) ? data : []);
         } catch (error) {
-            console.error('Error fetching crosswords:', error)
+            console.error('Error fetching crosswords:', error);
+            setCrosswords([]); // Fallback to empty array on error
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     return (
         <div className="container py-4">
@@ -33,23 +30,6 @@ const Home = () => {
                 <div className="col-12">
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h1 className="display-4 text-primary">תשבצים פומביים</h1>
-                        <div className="btn-group" role="group">
-                            <input type="radio" className="btn-check" name="filter" id="all"
-                                checked={filter === 'all'} onChange={() => setFilter('all')} />
-                            <label className="btn btn-outline-primary" htmlFor="all">הכל</label>
-
-                            <input type="radio" className="btn-check" name="filter" id="easy"
-                                checked={filter === 'easy'} onChange={() => setFilter('easy')} />
-                            <label className="btn btn-outline-primary" htmlFor="easy">קל</label>
-
-                            <input type="radio" className="btn-check" name="filter" id="medium"
-                                checked={filter === 'medium'} onChange={() => setFilter('medium')} />
-                            <label className="btn btn-outline-primary" htmlFor="medium">בינוני</label>
-
-                            <input type="radio" className="btn-check" name="filter" id="hard"
-                                checked={filter === 'hard'} onChange={() => setFilter('hard')} />
-                            <label className="btn btn-outline-primary" htmlFor="hard">קשה</label>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -63,7 +43,7 @@ const Home = () => {
             ) : (
                 <div className="row g-4">
                     {crosswords.map(crossword => (
-                        <div key={crossword.id} className="col-lg-4 col-md-6">
+                        <div key={crossword._id} className="col-lg-4 col-md-6">
                             <CrosswordCard crossword={crossword} />
                         </div>
                     ))}

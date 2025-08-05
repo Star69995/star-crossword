@@ -1,8 +1,9 @@
 // components/cards/CrosswordCard.jsx
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../providers/AuthContext'
 import { likeCrossword, unlikeCrossword } from '../../services/api'
+import PropTypes from 'prop-types';
 
 const CrosswordCard = ({ crossword, showActions = false, onUpdate, onDelete }) => {
     const { user } = useAuth()
@@ -18,11 +19,11 @@ const CrosswordCard = ({ crossword, showActions = false, onUpdate, onDelete }) =
         setLoading(true)
         try {
             if (liked) {
-                await unlikeCrossword(crossword.id)
+                await unlikeCrossword(crossword._id)
                 setLiked(false)
                 setLikesCount(prev => prev - 1)
             } else {
-                await likeCrossword(crossword.id)
+                await likeCrossword(crossword._id)
                 setLiked(true)
                 setLikesCount(prev => prev + 1)
             }
@@ -98,7 +99,7 @@ const CrosswordCard = ({ crossword, showActions = false, onUpdate, onDelete }) =
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center">
-                    <Link to={`/crossword/${crossword.id}`} className="btn btn-primary btn-sm">
+                    <Link to={`/crossword/${crossword._id}`} className="btn btn-primary btn-sm">
                         <i className="bi bi-play-circle me-1"></i>
                         פתור תשבץ
                     </Link>
@@ -137,3 +138,9 @@ const CrosswordCard = ({ crossword, showActions = false, onUpdate, onDelete }) =
 }
 
 export default CrosswordCard
+CrosswordCard.propTypes = {
+    crossword: PropTypes.object.isRequired,
+    showActions: PropTypes.bool,
+    onUpdate: PropTypes.func,
+    onDelete: PropTypes.func,
+};

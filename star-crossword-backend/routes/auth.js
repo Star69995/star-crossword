@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const _ = require("lodash")
 
 const { User, authValidation } = require("../model/userModel")
 
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
     const token = jwt.sign({ _id: user._id, isContentCreator: user.isContentCreator }, process.env.TOKEN_SECRET)
 
     // response
-    res.header("auth-token", token).send(token)
+    res.header("auth-token", token).send({message: "Login successful", user: _.pick(user, ["userName"]), token: token})
 })
 
 module.exports = router

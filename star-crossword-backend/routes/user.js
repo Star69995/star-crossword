@@ -9,6 +9,13 @@ const { authMD, optionalAuthMD } = require("../middleware/authMD")
 // הפרטים שישלחו חזרה למשתמש
 const userDetails = ["userName", "email", "isContentCreator", "createdAt", "_id"]
 
+
+// get the logged in user
+router.get("/me", authMD, async (req, res) => {
+    let user = await User.findById(req.user._id)
+    res.send({ message: "User found", user: _.pick(user, userDetails) })
+})
+
 // get user info
 router.get("/:id", authMD ,async (req, res) => {
     // authMD makes sure the user is authenticated

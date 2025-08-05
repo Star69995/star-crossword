@@ -24,9 +24,6 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">דף הבית</Link>
-                        </li>
-                        <li className="nav-item">
                             <Link className="nav-link" to="/wordlists">רשימות מילים</Link>
                         </li>
                         {user && (

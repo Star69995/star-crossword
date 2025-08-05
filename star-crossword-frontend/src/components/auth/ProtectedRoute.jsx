@@ -1,4 +1,4 @@
-// components/auth/ProtectedRoute.jsx
+import PropTypes from 'prop-types';
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../providers/AuthContext'
 
@@ -39,3 +39,8 @@ const ProtectedRoute = ({ children, requiresContentCreator = false }) => {
 }
 
 export default ProtectedRoute
+
+ProtectedRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+    requiresContentCreator: PropTypes.bool,
+};
