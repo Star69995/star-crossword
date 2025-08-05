@@ -2,14 +2,19 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { CrosswordProvider } from './providers/CrosswordContext'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
+import { AuthProvider } from './providers/AuthContext'
+import { CrosswordProvider } from './providers/CrosswordContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CrosswordProvider>
-      <App />
-    </CrosswordProvider>
+    <AuthProvider>
+      <CrosswordProvider>
+        <App />
+      </CrosswordProvider>
+    </AuthProvider>
   </StrictMode>,
 )

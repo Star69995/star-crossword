@@ -11,24 +11,31 @@ app.use(morgan("dev"))
 
 const port = process.env.PORT ?? 3000
 
+
+// Add this before your routes:
+app.use(cors({
+    origin: 'http://localhost:5173', // Or '*' for development, but see note below!
+    credentials: true, // If you use cookies for auth
+}));
+
 // Configure CORS with authorized origins only
-const corsOptions = {
-    origin: function (origin, callback) {
-        const allowedOrigins = [
-            `http://localhost:${port}`,
-        ];
+// const corsOptions = {
+//     origin: function (origin, callback) {
+//         const allowedOrigins = [
+//             `http://localhost:${port}`,
+//         ];
 
-        // Allow requests with no origin (like mobile apps or Postman)
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-    optionsSuccessStatus: 200
-}
-
-app.use(cors(corsOptions))
+//         // Allow requests with no origin (like mobile apps or Postman)
+//         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+//             callback(null, true)
+//         } else {
+//             callback(new Error('Not allowed by CORS'))
+//         }
+//     },
+//     optionsSuccessStatus: 200
+// }
+// 
+// app.use(cors(corsOptions))
 
 
 app.use("/api/users", require("./routes/user"))
