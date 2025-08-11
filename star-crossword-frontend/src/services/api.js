@@ -42,7 +42,7 @@ export const login = async (email, password) => {
 
 export const getCurrentUser = async () => {
     const response = await api.get('/users/me')
-    return response.data
+    return response.data.user
 }
 
 export const updateProfile = async (userId, profileData) => {
@@ -63,11 +63,10 @@ export const getCrosswordById = async (id) => {
 
 export const getMyCrosswords = async () => {
     const response = await api.get('/crosswords/my-crosswords')
-    return response.data
+    return response.data.crosswords
 }
 
 export const createCrossword = async (crosswordData) => {
-    // This endpoint doesn't exist in your API, you might need to add it
     const response = await api.post('/crosswords/', crosswordData)
     return response.data
 }
@@ -82,13 +81,7 @@ export const deleteCrossword = async (id) => {
     return response.data
 }
 
-export const likeCrossword = async (id) => {
-    const response = await api.patch(`/crosswords/${id}/like`)
-    return response.data
-}
-
-export const unlikeCrossword = async (id) => {
-    // Your API only has like, not unlike. You might need to call like again to toggle
+export const toggleLikeCrossword = async (id) => {
     const response = await api.patch(`/crosswords/${id}/like`)
     return response.data
 }
@@ -114,9 +107,9 @@ export const createWordList = async (wordListData) => {
     return response.data
 }
 
-export const getWordLists = async (params = {}) => {
-    const response = await api.get('/wordLists', { params })
-    return response.data
+export const getWordLists = async () => {
+    const response = await api.get('/wordLists')
+    return response.data.wordlists
 }
 
 export const getWordListById = async (id) => {
@@ -126,7 +119,7 @@ export const getWordListById = async (id) => {
 
 export const getMyWordLists = async () => {
     const response = await api.get('/wordLists/my-wordLists')
-    return response.data
+    return response.data.wordlists
 }
 
 export const updateWordList = async (id, wordListData) => {
@@ -140,15 +133,8 @@ export const deleteWordList = async (id) => {
     return response.data
 }
 
-// Like endpoints for word lists (if they exist)
-export const likeWordList = async (id) => {
-    // This endpoint doesn't exist in your API, you might need to add it
-    const response = await api.patch(`/wordLists/${id}/like`)
-    return response.data
-}
-
-export const unlikeWordList = async (id) => {
-    // This endpoint doesn't exist in your API, you might need to add it
+// Like endpoints for word lists
+export const toggleLikeWordList = async (id) => {
     const response = await api.patch(`/wordLists/${id}/like`)
     return response.data
 }

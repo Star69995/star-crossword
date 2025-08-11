@@ -24,6 +24,10 @@ const Home = () => {
         }
     };
 
+    const handleDeleteCrossword = (id) => {
+        setCrosswords(prev => prev.filter(cw => cw._id !== id));
+    };
+
     return (
         <div className="container py-4">
             <div className="row">
@@ -44,7 +48,7 @@ const Home = () => {
                 <div className="row g-4">
                     {crosswords.map(crossword => (
                         <div key={crossword._id} className="col-lg-4 col-md-6">
-                            <CrosswordCard crossword={crossword} />
+                            <CrosswordCard crossword={crossword} onDelete={handleDeleteCrossword} />
                         </div>
                     ))}
                     {crosswords.length === 0 && (

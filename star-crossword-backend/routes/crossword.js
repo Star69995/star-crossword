@@ -1,4 +1,3 @@
-// crosswordRoutes.js
 const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
@@ -6,17 +5,30 @@ const { Crossword, crosswordValidation } = require("../model/crosswordModel");
 const { authMD, optionalAuthMD } = require("../middleware/authMD");
 const { validateUser, findDocument } = require("../utils");
 
+const findDocumentAndResponse = async (id, userId, res) => {
+    const crossword = await findDocument(
+        Crossword,
+        id,
+        userId,
+        { path: "creator", select: "userName" }
+    );
+
+    if (!crossword) {
+        res.status(404).send({ message: "Crossword not found or you are not the creator" });
+        return
+    }
+
+    return crossword// If found, return (router will use it)
+};
+
 // DELETE crossword
 router.delete("/:id", authMD, async (req, res) => {
     validateUser(req, res, ["contentCreator"]);
 
-    const crossword = await findDocument(Crossword, req.params.id, req.requestingUser._id);
-
+    const crossword = await Crossword.findOneAndDelete({ _id: req.params.id, creator: req.requestingUser._id });
     if (!crossword) {
         return res.status(404).send({ message: "Crossword not found or you are not the creator" });
     }
-
-    await crossword.remove();
     res.send({ message: "Crossword deleted", crossword });
 });
 
@@ -48,8 +60,8 @@ router.put("/:id", authMD, async (req, res) => {
 router.patch("/:id/like", authMD, async (req, res) => {
     validateUser(req, res);
 
-    const crossword = await findDocument(Crossword, req.params.id);
-    if (!crossword) return res.status(404).send({ message: "Crossword not found" });
+    const crossword = await findDocumentAndResponse(req.params.id, null, res);
+    if (!crossword) return;
 
     const userId = req.requestingUser._id.toString();
 
@@ -65,8 +77,8 @@ router.patch("/:id/like", authMD, async (req, res) => {
 router.put("/:id/solved", authMD, async (req, res) => {
     validateUser(req, res);
 
-    const crossword = await findDocument(Crossword, req.params.id);
-    if (!crossword) return res.status(404).send({ message: "Crossword not found" });
+    const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser._id, res);
+    if (!crossword) return;
 
     const userId = req.requestingUser._id.toString();
 
@@ -83,8 +95,8 @@ router.put("/:id/solved", authMD, async (req, res) => {
 router.delete("/:id/solved", authMD, async (req, res) => {
     validateUser(req, res);
 
-    const crossword = await findDocument(Crossword, req.params.id);
-    if (!crossword) return res.status(404).send({ message: "Crossword not found" });
+    const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser._id, res);
+    if (!crossword) return;
 
     const userId = req.requestingUser._id.toString();
 
@@ -101,8 +113,8 @@ router.delete("/:id/solved", authMD, async (req, res) => {
 router.patch("/:id/visibility", authMD, async (req, res) => {
     validateUser(req, res);
 
-    const crossword = await findDocument(Crossword, req.params.id, req.requestingUser._id);
-    if (!crossword) return res.status(404).send({ message: "Crossword not found" });
+    const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser._id, res);
+    if (!crossword) return;
 
     crossword.isPublic = !crossword.isPublic;
     await crossword.save();
@@ -111,7 +123,7 @@ router.patch("/:id/visibility", authMD, async (req, res) => {
 
 // GET user crosswords
 router.get("/my-crosswords", authMD, async (req, res) => {
-    const crosswords = await Crossword.find({ creator: req.requestingUser._id });
+    const crosswords = await Crossword.find({ creator: req.requestingUser._id }).populate("creator", "userName");
     const count = crosswords.length;
 
     if (!count) return res.status(404).send({ message: "No crosswords found" });
@@ -121,10 +133,11 @@ router.get("/my-crosswords", authMD, async (req, res) => {
 
 // GET a crossword info
 router.get("/:id", optionalAuthMD, async (req, res) => {
-    const crossword = await Crossword.findById(req.params.id);
-    if (!crossword) return res.status(404).send({ message: "Crossword not found" });
+    // Populate creator with just the "userName" field
+    const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser._id, res);
+    if (!crossword) return;
 
-    if (!crossword.isPublic && (!req.requestingUser || req.requestingUser._id !== crossword.creator.toString())) {
+    if (!crossword.isPublic && (!req.requestingUser || req.requestingUser._id !== crossword.creator._id.toString())) {
         return res.status(403).send({ message: "Access denied" });
     }
 
@@ -133,7 +146,7 @@ router.get("/:id", optionalAuthMD, async (req, res) => {
 
 // GET all public crosswords
 router.get("/", async (req, res) => {
-    const crosswords = await Crossword.find({ isPublic: true });
+    const crosswords = await Crossword.find({ isPublic: true }).populate("creator", "userName");
     const count = crosswords.length;
 
     if (!count) return res.status(404).send({ message: "No crosswords found" });
@@ -155,7 +168,7 @@ router.post("/", authMD, async (req, res) => {
     res.send({
         message: "Crossword created",
         crossword,
-        creatingUser: _.pick(req.requestingUser, ["name", "email", "isContentCreator", "createdAt", "_id"]),
+        creatingUser: _.pick(req.requestingUser, ["username", "email", "isContentCreator", "createdAt", "_id"]),
     });
 });
 

@@ -1,15 +1,13 @@
 // pages/MyWordLists.jsx
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import WordListCard from '../components/cards/WordListCard'
-import { getMyWordLists, deleteWordList } from '../services/api'
-import { useAuth } from '../providers/AuthContext'
+import { getMyWordLists } from '../services/api'
 
 const MyWordLists = () => {
     const [wordLists, setWordLists] = useState([])
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState('all')
-    const { user } = useAuth()
 
     useEffect(() => {
         fetchWordLists()
@@ -27,22 +25,15 @@ const MyWordLists = () => {
         }
     }
 
-    const handleDelete = async (wordListId) => {
-        if (window.confirm('האם אתה בטוח שברצונך למחוק את רשימת המילים?')) {
-            try {
-                await deleteWordList(wordListId)
-                await fetchWordLists()
-            } catch (error) {
-                console.error('Error deleting word list:', error)
-            }
-        }
-    }
-
     const filteredWordLists = wordLists.filter(list => {
         if (filter === 'public') return list.isPublic
         if (filter === 'private') return !list.isPublic
         return true
     })
+
+    const handleDeleteWordList = async (id) => {
+        setWordLists(prev => prev.filter(cw => cw._id !== id));
+    };
 
     return (
         <div className="container py-4">
@@ -91,13 +82,8 @@ const MyWordLists = () => {
             ) : (
                 <div className="row g-4">
                     {filteredWordLists.map(wordList => (
-                        <div key={wordList.id} className="col-lg-4 col-md-6">
-                            <WordListCard
-                                wordList={wordList}
-                                showActions={true}
-                                onUpdate={fetchWordLists}
-                                onDelete={() => handleDelete(wordList.id)}
-                            />
+                        <div key={wordList._id} className="col-lg-4 col-md-6">
+                            <WordListCard wordList={wordList} onDelete={handleDeleteWordList}/>
                         </div>
                     ))}
                     {filteredWordLists.length === 0 && (

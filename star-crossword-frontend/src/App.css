@@ -155,3 +155,7 @@ body {
     transform: scale(1);
   }
 }
+
+i{
+  margin: 10px;
+}

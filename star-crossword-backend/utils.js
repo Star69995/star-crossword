@@ -9,9 +9,24 @@ function validateUser(req, res, roles = []) {
 }
 
 // Find a document by ID and ensure the creator matches
-async function findDocument(Model, id, userId) {
-    const query = userId ? { _id: id, creator: userId } : { _id: id };
-    return await Model.findOne(query);
-}
+async function findDocument(Model, id, userId, populateFields = null) {
+    let q;
 
+    if (!id && userId) {
+        // No id: get all docs for the user
+        q = Model.find({ creator: userId });
+        if (populateFields) {
+            q = q.populate(populateFields);
+        }
+        return await q;
+    }
+
+    // id is provided: get the single doc (optionally, only owned by the user)
+    const query = userId ? { _id: id, creator: userId } : { _id: id };
+    q = Model.findOne(query);
+    if (populateFields) {
+        q = q.populate(populateFields);
+    }
+    return await q;
+}
 module.exports = { validateUser, findDocument };

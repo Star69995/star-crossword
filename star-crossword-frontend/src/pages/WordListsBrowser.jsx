@@ -29,9 +29,13 @@ const WordListsBrowser = () => {
     }
 
     const filteredWordLists = wordLists.filter(list =>
-        list.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        list.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         list.description?.toLowerCase().includes(searchTerm.toLowerCase())
     )
+
+    const handleDeleteWordList = (id) => {
+        setWordLists(prev => prev.filter(cw => cw._id !== id));
+    };
 
     return (
         <div className="container py-4">
@@ -81,8 +85,8 @@ const WordListsBrowser = () => {
             ) : (
                 <div className="row g-4">
                     {filteredWordLists.map(wordList => (
-                        <div key={wordList.id} className="col-lg-4 col-md-6">
-                            <WordListCard wordList={wordList} onUpdate={fetchWordLists} />
+                        <div key={wordList._id} className="col-lg-4 col-md-6">
+                            <WordListCard wordList={wordList} onDelete={handleDeleteWordList}/>
                         </div>
                     ))}
                     {filteredWordLists.length === 0 && (

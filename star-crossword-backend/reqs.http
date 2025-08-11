@@ -177,6 +177,7 @@ auth-token: {{token}}
     {
         "title": "test2",
         "description": "test2",
+        "isPublic": true,
         "crosswordObject": {
             "gridData": {
                 "grid": [
@@ -521,7 +522,7 @@ auth-token: {{token}}
 
 
 ###
-@crossword_id=68694d6b6b772204b7ac83ab
+@crossword_id=689711aef8f46a4dceeacedb
 
 
 ###
@@ -649,7 +650,7 @@ auth-token: {{token}}
 
 
 ###
-PATCH {{local}}/api/crosswords/{{crossword_id}}/like
+PATCH {{local}}/api/crosswords/6864173a3b37bab9b06d46db/like
 auth-token: {{token}}
 
 
@@ -686,7 +687,7 @@ Content-Type: application/json
         "definition": "מדינה באירופה"
         }
     ],
-    "isPublic": false
+    "isPublic": true
 }
 
 ###
@@ -723,3 +724,6 @@ Content-Type: application/json
     ],
     "isPublic": true
 }
+###
+DELETE {{local}}/api/wordLists/6898bd78b29da8b6f95b85c3
+auth-token: {{token}}

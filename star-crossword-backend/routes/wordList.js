@@ -5,17 +5,31 @@ const { WordList, wordListValidation } = require("../model/wordListModel");
 const { authMD, optionalAuthMD } = require("../middleware/authMD");
 const { validateUser, findDocument } = require("../utils");
 
+const findDocumentAndResponse = async (id, userId, res) => {
+    const wordlist = await findDocument(
+        WordList,
+        id,
+        userId,
+        { path: "creator", select: "userName" }
+    );
+    if (!wordlist) {
+        res.status(404).send({ message: "Word list not found or you are not the creator" });
+        return
+    }
+
+    return wordlist// If found, return (router will use it)
+};
+
 // DELETE wordlist
 router.delete("/:id", authMD, async (req, res) => {
     validateUser(req, res, ["contentCreator"]);
 
-    const wordlist = await findDocument(WordList, req.params.id, req.requestingUser._id);
+    const wordlist = await WordList.findOneAndDelete({ _id: req.params.id, creator: req.requestingUser._id });
 
     if (!wordlist) {
         return res.status(404).send({ message: "Word list not found or you are not the creator" });
     }
 
-    await wordlist.remove();
     res.send({ message: "Word list deleted", wordlist });
 });
 
@@ -74,7 +88,9 @@ router.patch("/:id/visibility", authMD, async (req, res) => {
 
 // GET user wordlists
 router.get("/my-wordlists", authMD, async (req, res) => {
-    const wordlists = await WordList.find({ creator: req.requestingUser._id });
+    const wordlists = await findDocumentAndResponse(null, req.requestingUser._id, res);
+    if (!wordlists) return;
+
     const count = wordlists.length;
 
     if (!count) return res.status(404).send({ message: "No word lists found" });
@@ -84,8 +100,8 @@ router.get("/my-wordlists", authMD, async (req, res) => {
 
 // GET wordlist info
 router.get("/:id", optionalAuthMD, async (req, res) => {
-    const wordlist = await WordList.findById(req.params.id);
-    if (!wordlist) return res.status(404).send({ message: "Word list not found" });
+    const wordlists = await findDocumentAndResponse(null, req.params.id, res);
+    if (!wordlists) return;
 
     if (!wordlist.isPublic && (!req.requestingUser || req.requestingUser._id !== wordlist.creator.toString())) {
         return res.status(403).send({ message: "Access denied" });
@@ -96,7 +112,7 @@ router.get("/:id", optionalAuthMD, async (req, res) => {
 
 // GET all public wordlists
 router.get("/", async (req, res) => {
-    const wordlists = await WordList.find({ isPublic: true });
+    const wordlists = await WordList.find({ isPublic: true }).populate("creator", "userName");
     const count = wordlists.length;
 
     if (!count) return res.status(404).send({ message: "No word lists found" });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useCrossword } from '../../providers/CrosswordContext';
 import wordLists from '../../utils/wordLists';
 import { isValidDefinitionsArray } from '../../utils/validators';
