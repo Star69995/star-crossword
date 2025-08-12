@@ -114,7 +114,7 @@ export const getWordLists = async () => {
 
 export const getWordListById = async (id) => {
     const response = await api.get(`/wordLists/${id}`)
-    return response.data
+    return response.data.wordlist
 }
 
 export const getMyWordLists = async () => {

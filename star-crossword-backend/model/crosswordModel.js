@@ -49,7 +49,7 @@ const Joi = require("joi")
 const crosswordValidation = Joi.object({
     title: Joi.string().min(2).max(255).required(),
     description: Joi.string(),
-    crosswordObject: Joi.object().required(),
+    crosswordObject: Joi.object(),
     isPublic: Joi.boolean(),
 }).required()
 

@@ -15,6 +15,9 @@ import MyWordLists from './pages/MyWordLists'
 import WordListsBrowser from './pages/WordListsBrowser'
 import WordListCreator from './pages/WordListCreator'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import CrosswordEditor from './pages/CrosswordEditor'
+import WordListEditor from './pages/WordListEditor'
+import WordListView from './pages/WordListView'
 
 function App() {
   return (
@@ -27,6 +30,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/crossword/:id" element={<CrosswordSolver />} />
+            <Route path="/wordlist/:id" element={<WordListView />} />
 
             <Route path="/profile" element={
               <ProtectedRoute>
@@ -40,6 +44,12 @@ function App() {
               </ProtectedRoute>
             } />
 
+            <Route path="/edit-crossword/:id" element={
+              <ProtectedRoute requiresContentCreator>
+                <CrosswordEditor />
+              </ProtectedRoute>
+            } />
+
             <Route path="/my-crosswords" element={
               <ProtectedRoute>
                 <MyCrosswords />
@@ -49,6 +59,12 @@ function App() {
             <Route path="/my-wordlists" element={
               <ProtectedRoute>
                 <MyWordLists />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/edit-wordlist/:id" element={
+              <ProtectedRoute requiresContentCreator>
+                <WordListEditor />
               </ProtectedRoute>
             } />
 

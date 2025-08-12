@@ -1,5 +1,5 @@
 // pages/Profile.jsx
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuth } from '../providers/AuthContext'
 import { updateProfile, changePassword } from '../services/api'
 
@@ -33,6 +33,7 @@ const Profile = () => {
             updateUser(updatedUser)
             setMessage('הפרופיל עודכן בהצלחה')
         } catch (error) {
+            console.log('error: ', error);
             setError('שגיאה בעדכון הפרופיל')
         } finally {
             setLoading(false)
@@ -56,6 +57,7 @@ const Profile = () => {
             setMessage('הסיסמה שונתה בהצלחה')
             setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' })
         } catch (error) {
+            console.log('error: ', error);
             setError('שגיאה בשינוי הסיסמה')
         } finally {
             setLoading(false)

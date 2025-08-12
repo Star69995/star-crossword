@@ -56,7 +56,10 @@ const ContentCard = ({
             <div className="card-body">
                 <div className="d-flex justify-content-between align-items-start mb-2">
                     <h5 className="card-title text-primary">{title}</h5>
-                    {badge}
+                    {badge
+                        ? <span className="badge bg-success">ציבורית</span>
+                        : <span className="badge bg-secondary">פרטית</span>
+                    }
                 </div>
                 {description && (
                     <p className="card-text text-muted small">{description}</p>
@@ -125,7 +128,7 @@ ContentCard.propTypes = {
     creator: PropTypes.string,
     createdAt: PropTypes.string,
     stats: PropTypes.array,
-    badge: PropTypes.node,
+    badge: PropTypes.bool,
     liked: PropTypes.bool,
     onLike: PropTypes.func,
     likesCount: PropTypes.number,

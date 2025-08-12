@@ -2,9 +2,11 @@ import { useAuth } from '../../providers/AuthContext'
 import { toggleLikeCrossword, deleteCrossword } from '../../services/api'
 import PropTypes from 'prop-types';
 import ContentCard from './ContentCard';
+import { useNavigate } from 'react-router-dom';
 
 const CrosswordCard = ({ crossword, onDelete }) => {
     const { user } = useAuth()
+    const navigate = useNavigate()
 
     const handleLike = async (id) => {
         if (!user) return
@@ -21,6 +23,10 @@ const CrosswordCard = ({ crossword, onDelete }) => {
         }
     }
 
+    const handleEdit = () => {
+        navigate(`/edit-crossword/${crossword._id}/`)
+    }
+
     return (
         <ContentCard
         id={crossword._id}
@@ -32,14 +38,14 @@ const CrosswordCard = ({ crossword, onDelete }) => {
                 { icon: "bi-grid", label: `${crossword.crosswordObject?.gridData?.grid?.length || "?"}x${crossword.crosswordObject?.gridData?.grid?.[0]?.length || "?"}` }
                 // more stats if needed
             ]}
-            badge={false}
+            badge={crossword.isPublic}
             liked={crossword.likes.includes(user?._id)}
             onLike={handleLike}
             likesCount={crossword.likes.length || 0}
             // likeLoading={loading}
             canEdit={user?._id === crossword.creator._id}
             canDelete={user?._id === crossword.creator._id}
-            // onEdit={handleEdit}
+            onEdit={handleEdit}
             onDelete={handleDelete}
             viewUrl={`/crossword/${crossword._id}`}
             viewText="פתור תשבץ"

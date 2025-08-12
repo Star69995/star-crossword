@@ -21,6 +21,15 @@ async function findDocument(Model, id, userId, populateFields = null) {
         return await q;
     }
 
+    if (id && !userId) {
+        // id is provided: get the single doc (optionally, only owned by the user)
+        q = Model.findOne({ _id: id });
+        if (populateFields) {
+            q = q.populate(populateFields);
+        }
+        return await q;
+    }
+
     // id is provided: get the single doc (optionally, only owned by the user)
     const query = userId ? { _id: id, creator: userId } : { _id: id };
     q = Model.findOne(query);

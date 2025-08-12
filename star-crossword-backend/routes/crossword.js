@@ -13,7 +13,7 @@ const findDocumentAndResponse = async (id, userId, res) => {
         { path: "creator", select: "userName" }
     );
 
-    if (!crossword) {
+    if (!crossword && !crossword==[] ) {
         res.status(404).send({ message: "Crossword not found or you are not the creator" });
         return
     }
@@ -137,8 +137,20 @@ router.get("/:id", optionalAuthMD, async (req, res) => {
     const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser._id, res);
     if (!crossword) return;
 
-    if (!crossword.isPublic && (!req.requestingUser || req.requestingUser._id !== crossword.creator._id.toString())) {
-        return res.status(403).send({ message: "Access denied" });
+    if (!crossword.isPublic) {
+        if (
+            !req.requestingUser ||
+            !(
+                // Check for a Mongoose ObjectId with .equals
+                (typeof crossword.creator._id?.equals === "function"
+                    ? crossword.creator._id.equals(req.requestingUser._id)
+                    // Fallback to string comparison
+                    : String(crossword.creator._id) === String(req.requestingUser._id)
+                )
+            )
+        ) {
+            return res.status(403).send({ message: "Access denied" });
+        }
     }
 
     res.send({ message: "Crossword found", crossword });

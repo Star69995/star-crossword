@@ -12,7 +12,7 @@ const findDocumentAndResponse = async (id, userId, res) => {
         userId,
         { path: "creator", select: "userName" }
     );
-    if (!wordlist) {
+    if (!wordlist && !wordlist==[] ) {
         res.status(404).send({ message: "Word list not found or you are not the creator" });
         return
     }
@@ -100,11 +100,22 @@ router.get("/my-wordlists", authMD, async (req, res) => {
 
 // GET wordlist info
 router.get("/:id", optionalAuthMD, async (req, res) => {
-    const wordlists = await findDocumentAndResponse(null, req.params.id, res);
-    if (!wordlists) return;
+    const wordlist = await findDocumentAndResponse(req.params.id, null, res);
+    if (!wordlist) return;
 
-    if (!wordlist.isPublic && (!req.requestingUser || req.requestingUser._id !== wordlist.creator.toString())) {
-        return res.status(403).send({ message: "Access denied" });
+    if (!wordlist.isPublic) {
+        if (
+            !req.requestingUser || // Not logged in
+            !(
+                // Mongoose way - handles ObjectId or string
+                (typeof wordlist.creator.equals === "function"
+                    ? wordlist.creator.equals(req.requestingUser._id)
+                    : String(wordlist.creator) === String(req.requestingUser._id)
+                )
+            )
+        ) {
+            return res.status(403).send({ message: "Access denied" });
+        }
     }
 
     res.send({ message: "Word list found", wordlist });

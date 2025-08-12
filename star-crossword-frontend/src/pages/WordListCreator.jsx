@@ -1,13 +1,9 @@
-// pages/WordListCreator.jsx
-// import { useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
-// import { createWordList } from '../services/api'
-import WordListForm from '../components/WordListForm'
+import WordListForm from '../components/forms/wordlists/WordListForm'
 
 const WordListCreator = () => {
     return (
         <WordListForm></WordListForm>
-   )
+    )
 }
 
 export default WordListCreator

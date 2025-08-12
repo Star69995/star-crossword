@@ -77,18 +77,6 @@ const MyCrosswords = () => {
                         <input type="radio" className="btn-check" name="filter" id="private-crosswords"
                             checked={filter === 'private'} onChange={() => setFilter('private')} />
                         <label className="btn btn-outline-primary" htmlFor="private-crosswords">פרטיים</label>
-
-                        <input type="radio" className="btn-check" name="filter" id="easy-crosswords"
-                            checked={filter === 'easy'} onChange={() => setFilter('easy')} />
-                        <label className="btn btn-outline-primary" htmlFor="easy-crosswords">קל</label>
-
-                        <input type="radio" className="btn-check" name="filter" id="medium-crosswords"
-                            checked={filter === 'medium'} onChange={() => setFilter('medium')} />
-                        <label className="btn btn-outline-primary" htmlFor="medium-crosswords">בינוני</label>
-
-                        <input type="radio" className="btn-check" name="filter" id="hard-crosswords"
-                            checked={filter === 'hard'} onChange={() => setFilter('hard')} />
-                        <label className="btn btn-outline-primary" htmlFor="hard-crosswords">קשה</label>
                     </div>
                 </div>
                 <div className="col-md-4 text-md-end">
@@ -109,12 +97,12 @@ const MyCrosswords = () => {
                 <div className="row g-4">
                     {Array.isArray(filteredCrosswords) && filteredCrosswords.length > 0 ? (
                         filteredCrosswords.map(crossword => (
-                            <div key={crossword.id} className="col-lg-4 col-md-6">
+                            <div key={crossword._id} className="col-lg-4 col-md-6">
                                 <CrosswordCard
                                     crossword={crossword}
                                     showActions={true}
                                     onUpdate={fetchCrosswords}
-                                    onDelete={() => handleDelete(crossword.id)}
+                                    onDelete={() => handleDelete(crossword._id)}
                                 />
                             </div>
                         ))
