@@ -14,7 +14,8 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
     const [fieldsState, setFieldsState] = useState({
         title: initialData?.title || "",
         description: initialData?.description || "",
-        size: initialData?.size || 15,
+        size: initialData?.size || 13,
+        maxWords: initialData?.maxWords || 8,
         wordListIds: initialData?.wordListIds || [],
         isPublic: initialData?.isPublic || false,
     });
@@ -31,7 +32,8 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
             setFieldsState({
                 title: initialData.title || "",
                 description: initialData.description || "",
-                size: initialData.size || 15,
+                size: initialData.size || 10,
+                maxWords: initialData.maxWords || 8,
                 wordListIds: initialData.wordListIds || [],
                 isPublic: initialData.isPublic || false,
             });
@@ -66,14 +68,14 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
         {
             name: "size",
             label: "גודל הלוח",
-            type: "select",
+            type: "text",
             required: true,
-            options: [
-                { value: 13, label: "13x13" },
-                { value: 15, label: "15x15" },
-                { value: 17, label: "17x17" },
-                { value: 21, label: "21x21" },
-            ],
+        },
+        {
+            name: "maxWords",
+            label: "מספר מילים מקסימלי שיופיע בתשבץ",
+            type: "text",
+            required: true,
         },
         {
             name: "isPublic",
@@ -94,9 +96,16 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
             [name]: value,
         }));
         setCustomErrors((prev) => ({ ...prev, [name]: undefined }));
+
+        // DEBUG:
+        if (name === "wordListIds") {
+            console.log('Selected wordListIds:', value);
+        }
     };
 
     const handleFormSubmit = async (data) => {
+        // Inject the real wordListIds from parent state
+        data = { ...data, wordListIds: fieldsState.wordListIds };
         setSubmitError("");
         let localErrors = {};
 
@@ -106,6 +115,11 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
         if (!isEdit && !data.size) {
             localErrors.size = "יש לבחור גודל לוח";
         }
+
+        if (!isEdit && !data.maxWords) {
+            localErrors.maxWords = "יש להזין מספר מילים מקסימלי";
+        }
+
         if (!isEdit && (!data.wordListIds || data.wordListIds.length === 0)) {
             localErrors.wordListIds = "יש לבחור לפחות רשימת מילים אחת";
         }
@@ -192,7 +206,8 @@ CrosswordForm.propTypes = {
         _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         title: PropTypes.string,
         description: PropTypes.string,
-        size: PropTypes.oneOf([13, 15, 17, 21]),
+        size: PropTypes.number,
+        maxWords: PropTypes.number,
         wordListIds: PropTypes.arrayOf(
             PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         ),

@@ -1,73 +1,101 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../providers/AuthContext'
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../providers/AuthContext';
 
 const Navbar = () => {
-    const { user, logout } = useAuth()
-    const navigate = useNavigate()
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        logout()
-        navigate('/')
-    }
+        logout();
+        navigate('/');
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div className="container">
+            <div className="container-fluid">
                 <Link className="navbar-brand fw-bold" to="/">
                     תשבצי דיגיטל
                 </Link>
 
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                >
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav me-auto">
+                    {/* Main navigation links */}
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/wordlists">רשימות מילים</Link>
+                            <Link className="nav-link" to="/wordlists">
+                                רשימות מילים
+                            </Link>
                         </li>
                         {user && (
                             <>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/my-crosswords">התשבצים שלי</Link>
+                                    <Link className="nav-link" to="/my-crosswords">
+                                        התשבצים שלי
+                                    </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/my-wordlists">רשימות המילים שלי</Link>
+                                    <Link className="nav-link" to="/my-wordlists">
+                                        רשימות המילים שלי
+                                    </Link>
                                 </li>
+                                {/* Creation links - no longer in a dropdown */}
                                 {user.isContentCreator && (
-                                    <li className="nav-item dropdown">
-                                        <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                            יצירה
-                                        </a>
-                                        <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to="/create-crossword">יצירת תשבץ</Link></li>
-                                            <li><Link className="dropdown-item" to="/create-wordlist">יצירת רשימת מילים</Link></li>
-                                        </ul>
-                                    </li>
+                                    <>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/create-crossword">
+                                                יצירת תשבץ
+                                            </Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/create-wordlist">
+                                                יצירת רשימת מילים
+                                            </Link>
+                                        </li>
+                                    </>
                                 )}
                             </>
                         )}
                     </ul>
 
+                    {/* User-related links */}
                     <ul className="navbar-nav">
                         {user ? (
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                    {user.name}
-                                </a>
-                                <ul className="dropdown-menu dropdown-menu-end">
-                                    <li><Link className="dropdown-item" to="/profile">פרופיל</Link></li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li><button className="dropdown-item" onClick={handleLogout}>התנתק</button></li>
-                                </ul>
-                            </li>
+                            <>
+                                {/* User's name links to profile */}
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/profile">
+                                        {user.name}
+                                    </Link>
+                                </li>
+                                {/* Logout button */}
+                                <li className="nav-item">
+                                    <button
+                                        className="btn btn-link nav-link" // styled as a link
+                                        onClick={handleLogout}
+                                    >
+                                        התנתק
+                                    </button>
+                                </li>
+                            </>
                         ) : (
                             <>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/login">התחבר</Link>
+                                    <Link className="nav-link" to="/login">
+                                        התחבר
+                                    </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/register">הירשם</Link>
+                                    <Link className="nav-link" to="/register">
+                                        הירשם
+                                    </Link>
                                 </li>
                             </>
                         )}
@@ -75,7 +103,7 @@ const Navbar = () => {
                 </div>
             </div>
         </nav>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;

@@ -33,10 +33,10 @@ const WordListsPicker = ({
                             className="form-check-input ms-2"
                             type="checkbox"
                             id={`wordlist-${wordList._id}`}
-                            checked={value.includes(wordList._id)}
+                            checked={value.map(String).includes(String(wordList._id))}
                             onChange={() => {
-                                if (value.includes(wordList._id)) {
-                                    onChange(value.filter((id) => id !== wordList._id));
+                                if (value.map(String).includes(String(wordList._id))) {
+                                    onChange(value.filter((id) => String(id) !== String(wordList._id)));
                                 } else {
                                     onChange([...value, wordList._id]);
                                 }
@@ -63,9 +63,9 @@ const WordListsPicker = ({
 WordListsPicker.propTypes = {
     wordLists: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-            name: PropTypes.string.isRequired,
-            wordsCount: PropTypes.number,
+            _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+            title: PropTypes.string.isRequired,
+            words: PropTypes.array.isRequired,
             description: PropTypes.string,
         })
     ).isRequired,
