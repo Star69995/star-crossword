@@ -12,8 +12,7 @@ const findDocumentAndResponse = async (id, userId, res) => {
         userId,
         { path: "creator", select: "userName" }
     );
-
-    if (!crossword && !crossword==[] ) {
+    if (!crossword || (Array.isArray(crossword) && crossword.length === 0)) {
         res.status(404).send({ message: "Crossword not found or you are not the creator" });
         return
     }
@@ -134,7 +133,7 @@ router.get("/my-crosswords", authMD, async (req, res) => {
 // GET a crossword info
 router.get("/:id", optionalAuthMD, async (req, res) => {
     // Populate creator with just the "userName" field
-    const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser._id, res);
+    const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser?._id || null, res);
     if (!crossword) return;
 
     if (!crossword.isPublic) {

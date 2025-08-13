@@ -12,7 +12,7 @@ const findDocumentAndResponse = async (id, userId, res) => {
         userId,
         { path: "creator", select: "userName" }
     );
-    if (!wordlist && !wordlist==[] ) {
+    if (!wordlist || (Array.isArray(wordlist) && wordlist.length === 0)) {
         res.status(404).send({ message: "Word list not found or you are not the creator" });
         return
     }

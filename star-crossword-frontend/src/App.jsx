@@ -7,7 +7,7 @@ import Navbar from './components/layout/Navbar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Profile from './pages/Profile'
+// import Profile from './pages/Profile'
 import CrosswordSolver from './pages/CrosswordSolver'
 import CrosswordCreator from './pages/CrosswordCreator'
 import MyCrosswords from './pages/MyCrosswords'
@@ -32,11 +32,11 @@ function App() {
             <Route path="/crossword/:id" element={<CrosswordSolver />} />
             <Route path="/wordlist/:id" element={<WordListView />} />
 
-            <Route path="/profile" element={
+            {/* <Route path="/profile" element={
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
-            } />
+            } /> */}
 
             <Route path="/create-crossword" element={
               <ProtectedRoute requiresContentCreator>

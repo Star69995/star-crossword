@@ -1,5 +1,5 @@
 import { useCrossword } from '../../providers/CrosswordContext';
-import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 function Definition({ definition }) {
     const { selectedDefinition, setActiveDefinition, definitionsUsed } = useCrossword();
@@ -31,5 +31,9 @@ function Definition({ definition }) {
         </li>
     );
 }
+
+Definition.propTypes = {
+    definition: PropTypes.string.isRequired,
+};
 
 export default Definition;

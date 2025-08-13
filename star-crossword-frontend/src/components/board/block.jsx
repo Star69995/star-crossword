@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import  {  useRef, useState } from 'react';
 import { useCrossword } from '../../providers/CrosswordContext';
+import PropTypes from 'prop-types';
+
 
 const Block = ({ row, col }) => {
     const { grid, showSolution, updateCell, selectedDefinition, setActiveDefinition } = useCrossword();
@@ -90,7 +92,7 @@ const Block = ({ row, col }) => {
     };
     const isBlack = cell.solution === null;
 
-    const isSelected = selectedDefinition && cell.definitions.includes(selectedDefinition);
+    // const isSelected = selectedDefinition && cell.definitions.includes(selectedDefinition);
 
     const [focusedCell, setFocusedCell] = useState(null);
     return (
@@ -137,7 +139,7 @@ const Block = ({ row, col }) => {
                         setFocusedCell({ row, col });
                     }
                 }}
-                onBlur={(e) => {
+                onBlur={() => {
                     setFocusedCell(null);
                 }}
                 data-row={row}
@@ -146,6 +148,11 @@ const Block = ({ row, col }) => {
             />
         </div>
     );
+};
+
+Block.propTypes = {
+    row: PropTypes.number.isRequired,
+    col: PropTypes.number.isRequired
 };
 
 export default Block;

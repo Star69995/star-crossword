@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Block from './block';
 import { useCrossword } from "../../providers/CrosswordContext";
 

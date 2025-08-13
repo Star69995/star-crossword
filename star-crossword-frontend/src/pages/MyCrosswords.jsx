@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CrosswordCard from '../components/cards/CrosswordCard'
-import { getMyCrosswords, deleteCrossword } from '../services/api'
+import { getMyCrosswords } from '../services/api'
 import { useAuth } from '../providers/AuthContext'
 
 const MyCrosswords = () => {
@@ -29,16 +29,10 @@ const MyCrosswords = () => {
         }
     };
 
-    const handleDelete = async (crosswordId) => {
-        if (window.confirm('האם אתה בטוח שברצונך למחוק את התשבץ?')) {
-            try {
-                await deleteCrossword(crosswordId)
-                await fetchCrosswords()
-            } catch (error) {
-                console.error('Error deleting crossword:', error)
-            }
-        }
+    const handleDelete = async (id) => {
+        setCrosswords(prev => prev.filter(cw => cw._id !== id));
     }
+
 
     const filteredCrosswords = crosswords.filter(crossword => {
         if (filter === 'public') return crossword.isPublic

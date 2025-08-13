@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import ActionButtons from './ActionButtons'
 
 // statObj is array like [{icon: 'bi-heart', label: 13}, {icon: 'bi-list-ul', label: '50 words'}]
 const ContentCard = ({
@@ -45,11 +46,14 @@ const ContentCard = ({
     };
 
     const handleDelete = async () => {
-        try {
-            await onDelete(id);
-        } catch (error) {
-            console.error('Error deleting content:', error);
+        if (window.confirm('האם אתה בטוח שברצונך למחוק את התשבץ?')) {
+            try {
+                await onDelete(id);
+            } catch (error) {
+                console.error('Error deleting content:', error);
+            }
         }
+        
     }
     return (
         <div className="card h-100 shadow-sm">
@@ -95,26 +99,16 @@ const ContentCard = ({
                             <i className="bi bi-play-circle m-1"></i>{viewText}
                         </Link>
                     )}
-                    <div className="btn-group btn-group-sm">
-                        <button
-                            className={`btn ${isLiked ? 'btn-danger' : 'btn-outline-danger'} m-1`}
-                            onClick={handleLike}
-                            disabled={likeLoadingInternal}
-                            title={isLiked ? 'Unlike' : 'Like'}
-                        >
-                            <i className={`bi ${isLiked ? 'bi-heart-fill' : 'bi-heart'}`}></i>
-                        </button>
-                        {canEdit && (
-                            <button className="btn btn-outline-primary m-1" onClick={onEdit} title="Edit">
-                                <i className="bi bi-pencil"></i>
-                            </button>
-                        )}
-                        {canDelete && (
-                            <button className="btn btn-outline-danger m-1" onClick={handleDelete} title="Delete">
-                                <i className="bi bi-trash"></i>
-                            </button>
-                        )}
-                    </div>
+
+                    <ActionButtons
+                        isLiked={isLiked}
+                        canEdit={canEdit}
+                        canDelete={canDelete}
+                        onEdit={onEdit}
+                        handleLike={handleLike}
+                        likeLoadingInternal={likeLoadingInternal}
+                        handleDelete={handleDelete}
+                    />
                 </div>
             </div>
         </div>

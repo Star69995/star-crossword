@@ -522,13 +522,12 @@ auth-token: {{token}}
 
 
 ###
-@crossword_id=689711aef8f46a4dceeacedb
+@crossword_id=6898ccbef24c2fc600098101
 
 
 ###
 get {{local}}/api/crosswords/{{crossword_id}}
 auth-token: {{token}}
-
 
 ###
 DELETE {{local}}/api/crosswords/{{crossword_id}}

@@ -3,10 +3,8 @@
 
 
 const MakeGrid = ({ size = 12, maxWords = 10, definitionsList = [] }) => {
-
-    // const { definitionsList } = useCrossword();
-    // console.log(definitionsList);
-
+    size = parseInt(size);
+    maxWords = parseInt(maxWords);
     const createEmptyGrid = () => {
         return Array(size).fill().map(() =>
             Array(size).fill().map(() => ({

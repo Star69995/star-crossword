@@ -32,9 +32,6 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
             setFieldsState({
                 title: initialData.title || "",
                 description: initialData.description || "",
-                size: initialData.size || 10,
-                maxWords: initialData.maxWords || 8,
-                wordListIds: initialData.wordListIds || [],
                 isPublic: initialData.isPublic || false,
             });
         }
@@ -60,10 +57,10 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
         },
         {
             name: "description",
-            label: "תיאור (אופציונלי)",
+            label: "תיאור",
             type: "textarea",
             rows: 3,
-            required: false,
+            required: true,
         },
         {
             name: "size",
@@ -96,11 +93,6 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
             [name]: value,
         }));
         setCustomErrors((prev) => ({ ...prev, [name]: undefined }));
-
-        // DEBUG:
-        if (name === "wordListIds") {
-            console.log('Selected wordListIds:', value);
-        }
     };
 
     const handleFormSubmit = async (data) => {
@@ -139,6 +131,7 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
                 if (isEdit) {
                     delete payload.size;
                     delete payload.wordListIds;
+                    delete payload.maxWords;
                 } else {
                     payload.wordListIds = fieldsState.wordListIds;
                 }

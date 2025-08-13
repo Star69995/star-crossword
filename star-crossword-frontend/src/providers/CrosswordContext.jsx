@@ -1,6 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import MakeGrid from '../utils/MakeGrid';
-import wordLists from '../utils/wordLists';
+import { createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const CrosswordContext = createContext();
@@ -8,131 +6,17 @@ const CrosswordContext = createContext();
 export const useCrossword = () => useContext(CrosswordContext);
 
 export const CrosswordProvider = ({ children }) => {
-    // Safe function to load saved state
-    const loadSavedState = () => {
-        try {
-            const savedState = localStorage.getItem('crosswordState');
-            if (!savedState || savedState === 'undefined' || savedState === 'null') {
-                return null;
-            }
-            return JSON.parse(savedState);
-        } catch (error) {
-            console.error('Error loading saved state, clearing localStorage:', error);
-            // Clear corrupted data
-            localStorage.removeItem('crosswordState');
-            return null;
-        }
-    };
-
-    // Safe function to get default word list
-    const getDefaultWordList = () => {
-        try {
-            return wordLists?.default?.words || [];
-        } catch (error) {
-            console.error('Error loading default word list:', error);
-            return [];
-        }
-    };
-
-    // Safe function to create initial grid
-    const createInitialGrid = (size, maxWords, definitionsList) => {
-        try {
-            return MakeGrid({
-                size,
-                maxWords,
-                definitionsList,
-            });
-        } catch (error) {
-            console.error('Error creating initial grid:', error);
-            return {
-                grid: Array(size).fill().map(() =>
-                    Array(size).fill().map(() => ({
-                        value: '',
-                        solution: null,
-                        definitions: [],
-                        isHighlighted: false
-                    }))
-                ),
-                definitionsUsed: { across: [], down: [] },
-                wordPositions: []
-            };
-        }
-    };
-
-    const savedState = loadSavedState();
-
-    // State initialization with better error handling
-    const [definitionsList, setDefinitionsList] = useState(() => {
-        return savedState?.definitionsList || getDefaultWordList();
-    });
-
-    const [gridSize, setSize] = useState(() => {
-        return savedState?.gridSize || 15;
-    });
-
-    const [gridMaxWords, setMaxWords] = useState(() => {
-        return savedState?.gridMaxWords || 12;
-    });
-
-    const [{ grid, definitionsUsed, wordPositions }, setGridData] = useState(() => {
-        if (savedState?.gridData) {
-            return savedState.gridData;
-        } else {
-            const size = savedState?.gridSize || 15;
-            const maxWords = savedState?.gridMaxWords || 12;
-            const definitions = savedState?.definitionsList || getDefaultWordList();
-
-            return createInitialGrid(size, maxWords, definitions);
-        }
-    });
-
-    const [showSolution, setShowSolution] = useState(false);
+    const [grid, setGrid] = useState([]);
+    const [definitionsUsed, setDefinitionsUsed] = useState({});
+    const [wordPositions, setWordPositions] = useState([]);
     const [selectedDefinition, setSelectedDefinition] = useState(null);
-    const [showSetup, setShowSetup] = useState(false);
 
-    // Save state to localStorage with error handling
-    useEffect(() => {
-        try {
-            const stateToSave = {
-                gridData: { grid, definitionsUsed, wordPositions },
-                definitionsList,
-                gridSize,
-                gridMaxWords,
-                selectedDefinition,
-            };
-            localStorage.setItem('crosswordState', JSON.stringify(stateToSave));
-        } catch (error) {
-            console.error('Error saving state to localStorage:', error);
-        }
-    }, [grid, definitionsUsed, wordPositions, definitionsList, gridSize, gridMaxWords, selectedDefinition]);
-
-    const handleNewPuzzle = (definitionsToUse = []) => {
-        try {
-            if (definitionsToUse.length === 0) {
-                definitionsToUse = definitionsList;
-            }
-
-            const newGridData = MakeGrid({
-                size: gridSize,
-                maxWords: gridMaxWords,
-                definitionsList: definitionsToUse
-            });
-
-            setGridData(newGridData);
-            setShowSolution(false);
-            setSelectedDefinition(null);
-        } catch (error) {
-            console.error('Error creating new puzzle:', error);
-        }
+    const setGridData = (data) => {
+        setGrid(data.grid);
+        setDefinitionsUsed(data.definitionsUsed);
+        setWordPositions(data.wordPositions);
     };
 
-    const handleNewCustomPuzzle = () => {
-        setShowSetup(true);
-    };
-
-    const handleToggleSolution = () => {
-        setShowSolution((prev) => !prev);
-    };
 
     const updateCell = (row, col, value) => {
         try {
@@ -237,21 +121,16 @@ export const CrosswordProvider = ({ children }) => {
             grid,
             definitionsUsed,
             wordPositions,
-            showSolution,
-            handleNewPuzzle,
-            handleNewCustomPuzzle,
-            handleToggleSolution,
+            // showSolution,
+            // handleNewPuzzle,
+            // handleNewCustomPuzzle,
+            // handleToggleSolution,
             updateCell,
             selectedDefinition,
             setActiveDefinition,
-            setSize,
-            setMaxWords,
-            gridSize,
-            gridMaxWords,
-            showSetup,
-            setShowSetup,
-            definitionsList,
-            setDefinitionsList
+            setGridData
+            // definitionsList,
+            // setDefinitionsList
         }}>
             {children}
         </CrosswordContext.Provider>

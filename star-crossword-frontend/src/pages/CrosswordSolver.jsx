@@ -2,7 +2,10 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Crossword from '../components/board/Crossword'
-import { getCrosswordById } from '../services/api'
+import { getCrosswordById, deleteCrossword, toggleLikeCrossword } from '../services/api'
+import { useCrossword } from '../providers/CrosswordContext'
+import ActionButtons from '../components/cards/ActionButtons'
+import { useAuth } from '../providers/AuthContext'
 
 const CrosswordSolver = () => {
     const { id } = useParams()
@@ -10,6 +13,9 @@ const CrosswordSolver = () => {
     const [crossword, setCrossword] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
+    const { setGridData } = useCrossword()
+    const { user } = useAuth()
+    const [isLiked, setIsLiked] = useState(false)
 
     useEffect(() => {
         fetchCrossword()
@@ -20,6 +26,7 @@ const CrosswordSolver = () => {
             setLoading(true)
             const data = await getCrosswordById(id)
             setCrossword(data)
+            setGridData(data.crosswordObject.gridData)
         } catch (error) {
             setError('שגיאה בטעינת התשבץ')
             console.error('Error fetching crossword:', error)
@@ -27,6 +34,40 @@ const CrosswordSolver = () => {
             setLoading(false)
         }
     }
+
+    const handleEdit = () => {
+        navigate(`/edit-crossword/${crossword._id}/`)
+    }
+
+    const handleDelete = async () => {
+        if (window.confirm('האם אתה בטוח שברצונך למחוק את התשבץ?')) {
+
+            try {
+                await deleteCrossword(id)
+                navigate('/')
+            } catch (error) {
+                console.error('Error deleting crossword:', error)
+            }
+
+        }
+    }
+
+    const handleLike = async () => {
+
+        if (!user) return
+
+        try {
+            await toggleLikeCrossword(crossword._id);
+            if (isLiked) {
+                setIsLiked(false);
+            } else {
+                setIsLiked(true);
+            }
+        } catch (error) {
+            console.error('Error updating like:', error);
+        }
+
+    };
 
     if (loading) {
         return (
@@ -68,6 +109,14 @@ const CrosswordSolver = () => {
                                 <p className="text-muted">{crossword.description}</p>
                             )}
                         </div>
+                        <ActionButtons
+                            isLiked={isLiked}
+                            canEdit={crossword.creator._id === user?._id}
+                            canDelete={crossword.creator._id === user?._id}
+                            onEdit={handleEdit}
+                            handleLike={handleLike}
+                            handleDelete={handleDelete}
+                        />
                         <button
                             className="btn btn-outline-secondary"
                             onClick={() => navigate('/')}
@@ -75,6 +124,7 @@ const CrosswordSolver = () => {
                             <i className="bi bi-arrow-right me-2"></i>
                             חזור
                         </button>
+
                     </div>
                 </div>
             </div>

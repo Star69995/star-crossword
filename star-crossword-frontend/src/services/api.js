@@ -1,4 +1,5 @@
 import axios from 'axios'
+import MakeGrid from '../utils/MakeGrid'
 
 const API_BASE_URL = import.meta.env.REACT_APP_API_URL || 'http://localhost:3000/api'
 
@@ -67,7 +68,28 @@ export const getMyCrosswords = async () => {
 }
 
 export const createCrossword = async (crosswordData) => {
-    const response = await api.post('/crosswords/', crosswordData)
+    // for each list retrieve the words with api call and connect them to one list
+    const words = [];
+    for (const wordList of crosswordData.wordListIds) {
+        const response = await getWordListById(wordList);
+        words.push(...response.words);
+    }
+
+    const GridData = MakeGrid({
+        size: crosswordData.size,
+        maxWords: crosswordData.maxWords,
+        definitionsList: words
+    });
+
+    const crossword = {
+        title: crosswordData.title,
+        description: crosswordData.description,
+        isPublic: crosswordData.isPublic,
+        crosswordObject: { gridData:  GridData  } 
+        
+    }
+
+    const response = await api.post('/crosswords/', crossword)
     return response.data
 }
 

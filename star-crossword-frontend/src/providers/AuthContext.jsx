@@ -28,12 +28,9 @@ export const AuthProvider = ({ children }) => {
                 if (userData) {
                     setUser(userData);
                 } else {
-                    console.log('No user data returned, clearing token.');
                     localStorage.removeItem('token');
                 }
-            } else {
-                console.log('No token found in localStorage.');
-            }
+            } 
         } catch (error) {
             console.error('Error checking auth status:', error);
             localStorage.removeItem('token');
