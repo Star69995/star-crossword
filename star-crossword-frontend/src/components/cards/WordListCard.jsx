@@ -41,8 +41,8 @@ const WordListCard = ({ wordList, onDelete }) => {
             onLike={handleLike} // implement in parent or with hooks!
             likesCount={wordList.likes.length || 0}
             // likeLoading={loading}
-            canEdit={user?.id === wordList.creatorId}
-            canDelete={user?.id === wordList.creatorId}
+            canEdit={user?.id === wordList.creator._id}
+            canDelete={user?.id === wordList.creator._id}
             onEdit={handleEdit}    // implement in parent
             onDelete={handleDelete}
             viewUrl={`/wordlist/${wordList._id}`}

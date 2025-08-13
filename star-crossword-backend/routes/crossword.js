@@ -133,7 +133,7 @@ router.get("/my-crosswords", authMD, async (req, res) => {
 // GET a crossword info
 router.get("/:id", optionalAuthMD, async (req, res) => {
     // Populate creator with just the "userName" field
-    const crossword = await findDocumentAndResponse(req.params.id, req.requestingUser?._id || null, res);
+    const crossword = await findDocumentAndResponse(req.params.id, null, res);
     if (!crossword) return;
 
     if (!crossword.isPublic) {

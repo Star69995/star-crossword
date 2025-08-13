@@ -26,6 +26,7 @@ const CrosswordSolver = () => {
             setLoading(true)
             const data = await getCrosswordById(id)
             setCrossword(data)
+            setIsLiked(data.likes.includes(user._id))
             setGridData(data.crosswordObject.gridData)
         } catch (error) {
             setError('שגיאה בטעינת התשבץ')

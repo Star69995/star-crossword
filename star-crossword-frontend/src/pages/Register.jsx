@@ -1,14 +1,15 @@
-// pages/Register.jsx
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../providers/AuthContext'
+import GenericFormField from '../components/forms/GenericFormField'
 
 const Register = () => {
     const [formData, setFormData] = useState({
-        name: '',
+        userName: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        isContentCreator: false
     })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -34,12 +35,14 @@ const Register = () => {
 
         try {
             await register({
-                name: formData.name,
+                userName: formData.userName,
                 email: formData.email,
-                password: formData.password
+                password: formData.password,
+                isContentCreator: formData.isContentCreator
             })
             navigate('/')
         } catch (error) {
+            console.log('error: ', error);
             setError('שגיאה בהרשמה. נסה שוב.')
         } finally {
             setLoading(false)
@@ -47,10 +50,11 @@ const Register = () => {
     }
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
+        const { name, type, value, checked } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value,
+        }));
     }
 
     return (
@@ -62,7 +66,7 @@ const Register = () => {
                             <div className="text-center mb-4">
                                 <i className="bi bi-person-plus-fill fs-1 text-primary"></i>
                                 <h2 className="card-title">הרשמה</h2>
-                                <p className="text-muted">צור חשבון חדש</p>
+                                <p className="text-muted">יצירת חשבון חדש</p>
                             </div>
 
                             {error && (
@@ -72,60 +76,34 @@ const Register = () => {
                             )}
 
                             <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
-                                    <label htmlFor="name" className="form-label">שם מלא</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="name"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
 
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">אימייל</label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        id="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        required
-                                        dir="ltr"
-                                    />
-                                </div>
+                                <GenericFormField name="userName" label="שם משתמש" value={formData.userName} type="text" onChange={handleChange} />
 
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">סיסמה</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="password"
-                                        name="password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        required
-                                        minLength="6"
-                                    />
+                                <GenericFormField name="email" label="אימייל" value={formData.email} type="email" onChange={handleChange} />
+
+                                <GenericFormField
+                                    name="password"
+                                    label="סיסמה"
+                                    type="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                    minLength="6" >
                                     <div className="form-text">לפחות 6 תווים</div>
-                                </div>
+                                </GenericFormField>
 
-                                <div className="mb-4">
-                                    <label htmlFor="confirmPassword" className="form-label">אישור סיסמה</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="confirmPassword"
-                                        name="confirmPassword"
-                                        value={formData.confirmPassword}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
+
+
+                                <GenericFormField
+                                    name="confirmPassword"
+                                    label="אישור סיסמה"
+                                    type="password"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    required
+                                />
+
+                                <GenericFormField name="isContentCreator" label="יוצר תוכן" value={formData.isContentCreator} type="checkbox" onChange={handleChange} />
 
                                 <button
                                     type="submit"
@@ -138,13 +116,13 @@ const Register = () => {
                                             נרשם...
                                         </>
                                     ) : (
-                                        'הירשם'
+                                        'הרשמה'
                                     )}
                                 </button>
                             </form>
 
                             <div className="text-center">
-                                <p className="mb-0">יש לך כבר חשבון? <Link to="/login" className="text-decoration-none">התחבר</Link></p>
+                                <p className="mb-0">יש לך כבר חשבון? <Link to="/login" className="text-decoration-none">התחברות</Link></p>
                             </div>
                         </div>
                     </div>

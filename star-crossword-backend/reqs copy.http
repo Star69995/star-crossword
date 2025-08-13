@@ -1,7 +1,8 @@
 @local=http://localhost:3000
 
 @id=6864ff1a0c0ed659a86ac77a
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODY0ZmYxYTBjMGVkNjU5YTg2YWM3N2EiLCJpc0NvbnRlbnRDcmVhdG9yIjp0cnVlLCJpYXQiOjE3NTE0NDkzNzh9.PjoFhzfkC_W3Vyh8QYQWcswNxmXmwjuJUnU6qb8dKXQ
+# normal user
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODljOTdjYTU4NGI1OGUxMzA3NDAyNzkiLCJpc0NvbnRlbnRDcmVhdG9yIjpmYWxzZSwiaWF0IjoxNzU1MDkzNDY2fQ.olVlNBRuiUwXZL9zUBO3gR9zA5cXqpDSP6Ff7V27i3A
 
 get {{local}}/api/users/me
 auth-token: {{token}}
@@ -24,7 +25,7 @@ POST {{local}}/api/login/
 Content-Type: application/json
 
     {
-        "email": "eh4tf56jk@example.com",
+        "email": "ray@gmail.com",
         "password": "123456"
     }
 
@@ -522,8 +523,7 @@ auth-token: {{token}}
 
 
 ###
-@crossword_id=6898ccbef24c2fc600098101
-
+@crossword_id=689b8997cc86efeac3e54a6a
 
 ###
 get {{local}}/api/crosswords/{{crossword_id}}
