@@ -23,7 +23,7 @@ const Navbar = () => {
             }
         };
     }, []); // Empty dependency array ensures this runs only once
-    
+
     const hideNavbar = () => {
         if (bsCollapseRef.current) {
             bsCollapseRef.current.hide();
@@ -59,7 +59,7 @@ const Navbar = () => {
         <nav ref={navbarRef} className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
             <div className="container-fluid">
                 <Link className="navbar-brand fw-bold" to="/" onClick={hideNavbar}>
-                    תשבצי דיגיטל
+                    סטאר תשבצים 
                 </Link>
 
                 <button
@@ -74,7 +74,11 @@ const Navbar = () => {
                 <div ref={collapseRef} className="collapse navbar-collapse" id="navbarNav">
                     {/* Main navigation links */}
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        {/* 5. Add onClick={hideNavbar} to all links */}
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/about" onClick={hideNavbar}>
+                                אודות
+                            </Link>
+                        </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/wordlists" onClick={hideNavbar}>
                                 רשימות מילים
@@ -124,7 +128,7 @@ const Navbar = () => {
                                         className="btn btn-link nav-link"
                                         onClick={handleLogout} // The handler already calls hideNavbar
                                     >
-                                        התנתק
+                                        התנתקות
                                     </button>
                                 </li>
                             </>
@@ -132,12 +136,12 @@ const Navbar = () => {
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/login" onClick={hideNavbar}>
-                                        התחבר
+                                        התחברות
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/register" onClick={hideNavbar}>
-                                        הירשם
+                                        הרשמה
                                     </Link>
                                 </li>
                             </>

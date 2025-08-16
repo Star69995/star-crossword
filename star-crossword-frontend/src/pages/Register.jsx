@@ -16,6 +16,9 @@ const Register = () => {
     const { register } = useAuth()
     const navigate = useNavigate()
 
+    // regex: at least 1 uppercase, 1 lowercase, 4 numbers, 1 special, min 8 chars
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=(?:.*\d){4,})(?=.*[!@#$%^&*\-_()]).{8,}$/
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
@@ -27,8 +30,10 @@ const Register = () => {
             return
         }
 
-        if (formData.password.length < 6) {
-            setError('הסיסמה חייבת להכיל לפחות 6 תווים')
+        if (!passwordRegex.test(formData.password)) {
+            setError(
+                'הסיסמה חייבת להכיל לפחות אות גדולה, אות קטנה, 4 ספרות, סימן מיוחד (!@#$%^&*-_()), ומינימום 8 תווים'
+            )
             setLoading(false)
             return
         }
@@ -42,7 +47,7 @@ const Register = () => {
             })
             navigate('/')
         } catch (error) {
-            console.log('error: ', error);
+            console.error('Error registering:', error)
             setError('שגיאה בהרשמה. נסה שוב.')
         } finally {
             setLoading(false)

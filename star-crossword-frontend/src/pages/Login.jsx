@@ -19,7 +19,7 @@ const Login = () => {
             navigate('/')
         } catch (error) {
             console.log('error: ', error);
-            setError('שגיאה בהתחברות. בדוק את הפרטים ונסה שוב.')
+            setError('שגיאה בהתחברות. יש לבדוק את הפרטים ולנסות שוב.')
         } finally {
             setLoading(false)
         }
@@ -88,13 +88,13 @@ const Login = () => {
                                             מתחבר...
                                         </>
                                     ) : (
-                                        'התחבר'
+                                        'התחברות'
                                     )}
                                 </button>
                             </form>
 
                             <div className="text-center">
-                                <p className="mb-0">אין לך חשבון? <Link to="/register" className="text-decoration-none">הירשם עכשיו</Link></p>
+                                <p className="mb-0">אין לך חשבון? <Link to="/register" className="text-decoration-none">הרשמה עכשיו</Link></p>
                             </div>
                         </div>
                     </div>

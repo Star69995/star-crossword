@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { createCrossword, updateCrossword, getMyWordLists } from "../../../services/api";
+import { createCrossword, updateCrossword, getMyWordLists, getWordLists } from "../../../services/api";
 import FormCard from "../FormCard";
 import WordListsPicker from "./WordListsPicker";
 
@@ -40,8 +40,26 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
 
     const fetchWordLists = async () => {
         try {
-            const data = await getMyWordLists();
-            setWordLists(data);
+            const [myData, publicData] = await Promise.all([
+                getMyWordLists(),
+                getWordLists()
+            ]);
+
+            // Handle different possible response structures
+            const myLists = Array.isArray(myData) ? myData : (myData?.wordlists || []);
+            const publicLists = Array.isArray(publicData) ? publicData : (publicData?.wordlists || []);
+
+            // Use Map to remove duplicates efficiently
+            const uniqueMap = new Map();
+
+            // Add all lists to the map (duplicates will be overwritten)
+            [...myLists, ...publicLists].forEach(list => {
+                uniqueMap.set(list._id, list);
+            });
+
+            // Convert back to array
+            setWordLists(Array.from(uniqueMap.values()));
+            
         } catch (error) {
             console.error('שגיאה בשליפת רשימות מילים', error);
         }

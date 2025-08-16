@@ -18,15 +18,18 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import CrosswordEditor from './pages/CrosswordEditor'
 import WordListEditor from './pages/WordListEditor'
 import WordListView from './pages/WordListView'
+import Footer from './components/layout/Footer'
+import About from './pages/About'
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="App d-flex flex-column min-vh-100">
         <Navbar />
-        <div className="container-fluid">
+        <main className="container-fluid flex-grow-1">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/crossword/:id" element={<CrosswordSolver />} />
@@ -76,7 +79,8 @@ function App() {
               </ProtectedRoute>
             } />
           </Routes>
-        </div>
+        </main>
+        <Footer />
       </div>
     </Router>
   )

@@ -1,114 +1,110 @@
-# Star Crossword
+# ⭐ סטאר תשבצים
 
-A web-based crossword puzzle platform for creating, solving, and sharing crosswords.
+פלטפורמת תשבצים אינטרנטית המאפשרת יצירה, פתרון ושיתוף של תשבצים – עם מערכת ניהול משתמשים, תמיכה בריבוי שפות (כולל RTL), ועיצוב רספונסיבי למחשב ולמובייל.  
 
-## Table of Contents
-- Features
-- Getting Started
-- Components
-- API Documentation
-- Models
-- Services
-- Pages
+---
 
-## Features
-- Create and edit crosswords with a user-friendly interface  
-- Solve crosswords with an interactive grid and definitions area  
-- Share crosswords with others and browse public crosswords  
-- User authentication and authorization for content creators  
-- Support for multiple languages (RTL and LTR)  
+## 📖 תיאור כללי  
+Star Crossword הוא פרויקט גמר הבנוי מ־**צד שרת (Node.js + Express + MongoDB)** ו־**צד לקוח (React + Vite)**.  
+המערכת מאפשרת:  
+- יצירת תשבצים חדשים ע"י משתמשים בעלי הרשאת **Content Creator**  
+- פתרון תשבצים בזמן אמת עם ממשק גרפי  
+- סימון תשבצים או רשימות מילים כמועדפים  
+- גלישה בתשבצים ציבוריים ובהעדפות האישיות שלך  
+- הרשאות משתמשים (משתמש רגיל / יוצר תוכן / אדמין)  
+- מערכת הרשמה והתחברות מאובטחת עם JWT  
 
-## Getting Started
-To get started with the project, follow these steps:
+---
 
-1. **Clone the repository**:  
-   ```bash
-   git clone https://github.com/star69995/star-crossword.git
-   ```
+## 🖥️ צד שרת (Backend)  
+נבנה עם:  
+- **Node.js + Express** לניהול API  
+- **MongoDB + Mongoose** לניהול בסיס נתונים  
+- **jsonwebtoken (JWT)** לאימות משתמשים  
+- **bcrypt** להצפנת סיסמאות  
+- **Cors + Morgan** לניהול אבטחה ולוגים  
 
-2. **Install dependencies**:
-```
+### נקודות קצה (Endpoints עיקריים)
+- `/api/users` → הרשמה, ניהול משתמשים  
+- `/api/login` → התחברות וקבלת token  
+- `/api/crosswords` → יצירה, עריכה, מחיקה ופתרון תשבצים  
+- `/api/wordlists` → ניהול רשימות מילים (CRUD, לייקים, ציבורי/פרטי)  
+
+📄 תיעוד מלא של ה־API נמצא בקובץ `API.md`.
+
+---
+
+## 🎨 צד לקוח (Frontend)  
+נבנה עם:  
+- **React (Vite)**  
+- **Bootstrap / Material Design** לעיצוב ורספונסיביות  
+- **Bootstrap Icons** לאייקונים  
+
+### דרישות שהתגשמו בצד לקוח
+- 🌐 דף בית המזמין את המשתמש, עם כותרת ראשית, טקסט, תמונה ושדה חיפוש  
+- 🔑 דפי התחברות והרשמה עם ולידציה מתקדמת (Regex לסיסמאות)  
+- 🔄 CRUD מלא – יצירה, עדכון, מחיקה וקריאה בממשק שתואם ל־API  
+- ⭐ סימון מועדפים ושמירתם בבסיס הנתונים  
+- 📱 עיצוב רספונסיבי מותאם לנייד ודסקטופ  
+- 🔍 שדה חיפוש לסינון תוכן  
+- 📑 דף אודות עם מידע על האפליקציה ואופן השימוש בה  
+- 🦻 נגישות: favicon, title, תגיות alt לתמונות  
+- 🔐 ניהול הרשאות משתמשים (רגיל / יוצר תוכן) בהתאם ל־Token  
+
+---
+
+## 📂 מבנה פרויקט (כללי)
+project-root/  
+│  
+├── star-crossword-backend/ # צד שרת (Node.js + Express)  
+│ ├── routes/ # נקודות קצה API  
+│ ├── model/ # מודלים של MongoDB  
+│ ├── middleware/ # מידלוור JWT ואימות  
+│ ├── utils.js # פונקציות עזר  
+│ └── main.js # קובץ הפעלה ראשי  
+│  
+└── star-crossword-frontend/ # צד לקוח (React + Vite)  
+├── src/  
+│ ├── components/ # קומפוננטות React  
+│ ├── pages/ # דפים (בית, אודות, התחברות, הרשמה וכו’)  
+│ ├── providers/ # פרוביידרים (AuthContext, CrosswordContext)
+│ ├── services/ # שירותים
+│ ├── utils/ # פונקציות עזר
+│ ├── App.jsx # אפליקציה ראשית  
+│ └── main.jsx # נקודת כניסה
+
+## ⚙️ התקנה והפעלה
+
+### התקנת צד שרת
+```bash
+cd star-crossword-backend
 npm install
-# or
-yarn install
+npm run dev
 ```
+השרת ירוץ בכתובת ברירת המחדל:
+http://localhost:3000
 
-3. **Start the development server**:
+### התקנת צד לקוח
+```bash
+cd star-crossword-frontend
+npm install
+npm run dev
 ```
-npm start
-# or
-yarn start
-```
+האפליקציה תרוץ בכתובת ברירת המחדל:
+http://localhost:5173
 
-Components
-The project consists of the following components:
+## 👥 סוגי משתמשים והרשאות
 
-Crossword: The main crossword grid component
+-   **משתמש רגיל (User):** יכול לגלוש, לפתור תשבצים ולסמן מועדפים.
+-   **יוצר תוכן (Content Creator):** בנוסף, יכול ליצור, לערוך ולמחוק תשבצים ורשימות מילים.
+___
 
-DefinitionsArea: The area where definitions are displayed
+## 📞 פרטי יוצר
 
-Grid: The grid component for displaying crossword clues
+פרויקט גמר – **Star Crossword**  
+_מחבר: סטאר כהן_  
+✉ \[[star69995@gmail.com](mailto:star69995@gmail.com)\]
 
-WordListCard: A card component for displaying word lists
+___
 
-ContentCard: A card component for displaying content (e.g., crosswords, word lists)
-
-ActionButtons: A component for displaying action buttons (e.g., like, delete)
-
-API Documentation
-The project uses a RESTful API for interacting with the backend.
-
-Crosswords
-
-GET /crosswords – Get a list of all crosswords
-
-GET /crosswords/:id – Get a single crossword by ID
-
-POST /crosswords – Create a new crossword
-
-PUT /crosswords/:id – Update a crossword
-
-DELETE /crosswords/:id – Delete a crossword
-
-Word Lists
-
-GET /wordlists – Get a list of all word lists
-
-GET /wordlists/:id – Get a single word list by ID
-
-POST /wordlists – Create a new word list
-
-PUT /wordlists/:id – Update a word list
-
-DELETE /wordlists/:id – Delete a word list
-
-Models
-Crossword: A model for representing crosswords
-
-WordList: A model for representing word lists
-
-User: A model for representing users
-
-Services
-api.js: A service for making API requests to the backend
-
-auth.js: A service for handling user authentication and authorization
-
-Pages
-Home: The main homepage
-
-Login: The login page
-
-Register: The registration page
-
-Profile: The user profile page
-
-CrosswordEditor: The crossword editor page
-
-CrosswordSolver: The crossword solver page
-
-WordListEditor: The word list editor page
-
-WordListsBrowser: The word lists browser page
-
-MyWordLists: The my word lists page
+© 2025 Star Crossword – כל הזכויות שמורות

@@ -19,13 +19,75 @@ api.interceptors.request.use((config) => {
 
 // Handle response errors
 api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        if (response.data && typeof response.data === 'object') {
+            // Handle wordList endpoints (both singular and plural)
+            if (response.config.url?.includes('/wordList')) {
+                if (!response.data.wordlists) {
+                    response.data.wordlists = [];
+                }
+                if (!response.data.wordlist) {
+                    response.data.wordlist = null;
+                }
+            }
+
+            // Handle crossword endpoints (both singular and plural)
+            if (response.config.url?.includes('/crossword')) {
+                if (!response.data.crosswords) {
+                    response.data.crosswords = [];
+                }
+                if (!response.data.crossword) {
+                    response.data.crossword = null;
+                }
+            }
+
+            // Handle user endpoints
+            if (response.config.url?.includes('/user')) {
+                if (!response.data.users) {
+                    response.data.users = [];
+                }
+                if (!response.data.user) {
+                    response.data.user = null;
+                }
+            }
+        }
+
+        return response;
+    },
     (error) => {
-        console.log('error: ', error);
+        // Handle 404s as empty responses for list endpoints
+        if (error.response?.status === 404) {
+            const url = error.config.url;
+
+            // For list endpoints, return empty array instead of error
+            if (url?.includes('/wordLists') || url?.includes('my-wordLists')) {
+                return {
+                    data: {
+                        message: 'No word lists found',
+                        wordlists: []
+                    }
+                };
+            }
+
+            if (url?.includes('/crosswords') || url?.includes('my-crosswords')) {
+                return {
+                    data: {
+                        message: 'No crosswords found',
+                        crosswords: []
+                    }
+                };
+            }
+
+            // For single item endpoints, you might want to let the 404 through
+            // or handle it differently
+        }
+
+        // Handle unauthorized
         if (error.response?.status === 401) {
             localStorage.removeItem('token')
             window.location.href = '/login'
         }
+
         return Promise.reject(error)
     }
 )
