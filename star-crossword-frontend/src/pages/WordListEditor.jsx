@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import WordListForm from '../components/forms/wordlists/WordListForm';
 import { updateWordList, getWordListById } from '../services/api';
+import { toast } from 'react-toastify';
 
 // Loads directly from the route parameter
 const WordListEditor = () => {
@@ -32,9 +33,11 @@ const WordListEditor = () => {
             // Usually you need to send the id along with the data (check your API expectation)
             await updateWordList(id, formData);
             navigate(`/wordList/${id}`);
+            toast.success('רשימת המילים עודכנה בהצלחה');
         } catch (error) {
             console.log('error: ', error);
             // Optionally: handle/save an update error to show in the form
+            toast.error('שגיאה בעדכון רשימת המילים');
         }
     };
 

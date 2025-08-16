@@ -10,6 +10,11 @@ const Navbar = () => {
     const collapseRef = useRef(null); // Ref for the collapsible div
     const bsCollapseRef = useRef(null); // Ref to store the bootstrap Collapse instance
 
+    const toggleNavbar = () => {
+        if (bsCollapseRef.current) {
+            bsCollapseRef.current.toggle();
+        }
+    };
     useEffect(() => {
         if (collapseRef.current) {
             // Create a new Collapse instance but prevent it from toggling on initialization
@@ -22,7 +27,7 @@ const Navbar = () => {
                 bsCollapseRef.current.dispose();
             }
         };
-    }, [user]); 
+    }, [user]);
 
     const hideNavbar = () => {
         if (bsCollapseRef.current) {
@@ -65,8 +70,10 @@ const Navbar = () => {
                 <button
                     className="navbar-toggler"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
+                    onClick={toggleNavbar}
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -86,16 +93,16 @@ const Navbar = () => {
                         </li>
                         {user && (
                             <>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/favorite-crosswords" onClick={hideNavbar}>
-                                    תשבצים אהובים 
-                                </Link>
-                            </li>
-                            <li>
-                                <Link className="nav-link" to="/favorite-wordlists" onClick={hideNavbar}>
-                                    רשימות מילים אהובות
-                                </Link>
-                            </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/favorite-crosswords" onClick={hideNavbar}>
+                                        תשבצים אהובים
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link className="nav-link" to="/favorite-wordlists" onClick={hideNavbar}>
+                                        רשימות מילים אהובות
+                                    </Link>
+                                </li>
                             </>
                         )}
                         {user && user.isContentCreator && (
@@ -110,20 +117,17 @@ const Navbar = () => {
                                         רשימות המילים שלי
                                     </Link>
                                 </li>
-                                {user.isContentCreator && (
-                                    <>
-                                        <li className="nav-item">
-                                            <Link className="nav-link" to="/create-crossword" onClick={hideNavbar}>
-                                                יצירת תשבץ
-                                            </Link>
-                                        </li>
-                                        <li className="nav-item">
-                                            <Link className="nav-link" to="/create-wordlist" onClick={hideNavbar}>
-                                                יצירת רשימת מילים
-                                            </Link>
-                                        </li>
-                                    </>
-                                )}
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/create-crossword" onClick={hideNavbar}>
+                                        יצירת תשבץ
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/create-wordlist" onClick={hideNavbar}>
+                                        יצירת רשימת מילים
+                                    </Link>
+                                </li>
+
                             </>
                         )}
                     </ul>

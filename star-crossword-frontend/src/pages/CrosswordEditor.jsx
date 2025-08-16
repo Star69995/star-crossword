@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import CrosswordForm from '../components/forms/crosswords/CrosswordForm';
 import { updateCrossword, getCrosswordById } from '../services/api';
-
+import { toast } from 'react-toastify';
 // Loads directly from the route parameter
 const CrosswordEditor = () => {
     const { id } = useParams(); // from /edit-crossword/:id
@@ -32,9 +32,11 @@ const CrosswordEditor = () => {
             // Usually you need to send the id along with the data (check your API expectation)
             await updateCrossword(id, formData);
             navigate(`/crossword/${id}`);
+            toast.success('התשבץ עודכן בהצלחה');
         } catch (error) {
             console.log('error: ', error);
             // Optionally: handle/save an update error to show in the form
+            toast.error('שגיאה בעדכון התשבץ');
         }
     };
 
