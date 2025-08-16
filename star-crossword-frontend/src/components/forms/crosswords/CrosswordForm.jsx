@@ -163,7 +163,6 @@ const CrosswordForm = ({ initialData, onSubmit }) => {
             } else {
                 await createCrossword(data);
             }
-            navigate("/my-crosswords");
         } catch (error) {
             console.log('error: ', error);
             setSubmitError(isEdit ? "שגיאה בעדכון התשבץ" : "שגיאה ביצירת התשבץ");

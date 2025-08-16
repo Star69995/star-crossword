@@ -3,6 +3,7 @@ import { toggleLikeWordList, deleteWordList } from '../../services/api'
 import PropTypes from 'prop-types';
 import ContentCard from './ContentCard'
 import { useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify";
 
 const WordListCard = ({ wordList, onDelete }) => {
     const { user } = useAuth()
@@ -17,14 +18,18 @@ const WordListCard = ({ wordList, onDelete }) => {
             try {
                 await deleteWordList(id)
                 if (onDelete) onDelete(id)  // <<< Call parent callback
+                toast.success('נמחק בהצלחה');
             } catch (error) {
                 console.error('Error deleting crossword:', error)
+                toast.error('שגיאה במחיקה');
             }
         }
 
     const handleEdit = () => {
         navigate(`/edit-wordlist/${wordList._id}/`)
     }
+
+    const canEdit = user._id === wordList.creator._id
 
     return (
         <ContentCard
@@ -41,8 +46,8 @@ const WordListCard = ({ wordList, onDelete }) => {
             onLike={handleLike} // implement in parent or with hooks!
             likesCount={wordList.likes.length || 0}
             // likeLoading={loading}
-            canEdit={user?.id === wordList.creator._id}
-            canDelete={user?.id === wordList.creator._id}
+            canEdit={canEdit}
+            canDelete={canEdit}
             onEdit={handleEdit}    // implement in parent
             onDelete={handleDelete}
             viewUrl={`/wordlist/${wordList._id}`}

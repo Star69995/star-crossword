@@ -8,11 +8,22 @@ const MyCrosswords = () => {
     const [crosswords, setCrosswords] = useState([])
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState('all')
-    const { user } = useAuth()
+    const { user, loading: authLoading } = useAuth()
 
     useEffect(() => {
+        // Wait for auth to finish loading
+        if (authLoading) {
+            return;
+        }
+
+        // If no user after auth loaded, don't fetch
+        if (!user) {
+            setLoading(false);
+            return;
+        }
+
         fetchCrosswords()
-    }, [])
+    }, [user, authLoading]) // Add all dependencies
 
     const fetchCrosswords = async () => {
         try {

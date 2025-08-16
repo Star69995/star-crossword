@@ -22,7 +22,7 @@ const Navbar = () => {
                 bsCollapseRef.current.dispose();
             }
         };
-    }, []); // Empty dependency array ensures this runs only once
+    }, [user]); 
 
     const hideNavbar = () => {
         if (bsCollapseRef.current) {
@@ -52,14 +52,14 @@ const Navbar = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []); 
+    }, []);
 
 
     return (
         <nav ref={navbarRef} className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
             <div className="container-fluid">
                 <Link className="navbar-brand fw-bold" to="/" onClick={hideNavbar}>
-                    סטאר תשבצים 
+                    סטאר תשבצים
                 </Link>
 
                 <button
@@ -84,6 +84,20 @@ const Navbar = () => {
                                 רשימות מילים
                             </Link>
                         </li>
+                        {user && (
+                            <>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/favorite-crosswords" onClick={hideNavbar}>
+                                    תשבצים אהובים 
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/favorite-wordlists" onClick={hideNavbar}>
+                                    רשימות מילים אהובות
+                                </Link>
+                            </li>
+                            </>
+                        )}
                         {user && user.isContentCreator && (
                             <>
                                 <li className="nav-item">

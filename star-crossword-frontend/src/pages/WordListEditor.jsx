@@ -31,7 +31,7 @@ const WordListEditor = () => {
         try {
             // Usually you need to send the id along with the data (check your API expectation)
             await updateWordList(id, formData);
-            navigate(`/wordLists/${id}`);
+            navigate(`/wordList/${id}`);
         } catch (error) {
             console.log('error: ', error);
             // Optionally: handle/save an update error to show in the form

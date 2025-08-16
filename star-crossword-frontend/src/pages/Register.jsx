@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../providers/AuthContext'
 import GenericFormField from '../components/forms/GenericFormField'
+import { toast } from "react-toastify";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -46,6 +47,7 @@ const Register = () => {
                 isContentCreator: formData.isContentCreator
             })
             navigate('/')
+            toast.success('הרשמה בוצעה בהצלחה')
         } catch (error) {
             console.error('Error registering:', error)
             setError('שגיאה בהרשמה. נסה שוב.')

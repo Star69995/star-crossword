@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../providers/AuthContext'
+import { toast } from "react-toastify";
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' })
@@ -17,6 +18,7 @@ const Login = () => {
         try {
             await login(formData.email, formData.password)
             navigate('/')
+            toast.success('התחברת בהצלחה')
         } catch (error) {
             console.log('error: ', error);
             setError('שגיאה בהתחברות. יש לבדוק את הפרטים ולנסות שוב.')

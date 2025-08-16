@@ -6,6 +6,7 @@ import { getCrosswordById, deleteCrossword, toggleLikeCrossword } from '../servi
 import { useCrossword } from '../providers/CrosswordContext'
 import ActionButtons from '../components/cards/ActionButtons'
 import { useAuth } from '../providers/AuthContext'
+import { toast } from 'react-toastify'
 
 const CrosswordSolver = () => {
     const { id } = useParams()
@@ -14,12 +15,23 @@ const CrosswordSolver = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const { setGridData } = useCrossword()
-    const { user } = useAuth()
+    const { user, loading: authLoading } = useAuth()
     const [isLiked, setIsLiked] = useState(false)
 
     useEffect(() => {
+        // Wait for auth to finish loading
+        if (authLoading) {
+            return;
+        }
+
+        // If no user after auth loaded, don't fetch
+        if (!user) {
+            setLoading(false);
+            return;
+        }
+
         fetchCrossword()
-    }, [id])
+    }, [id, user, authLoading]) 
 
     const fetchCrossword = async () => {
         try {
@@ -46,8 +58,10 @@ const CrosswordSolver = () => {
             try {
                 await deleteCrossword(id)
                 navigate('/')
+                toast.success('נמחק בהצלחה');
             } catch (error) {
                 console.error('Error deleting crossword:', error)
+                toast.error('שגיאה במחיקה');
             }
 
         }

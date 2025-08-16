@@ -20,6 +20,10 @@ import WordListEditor from './pages/WordListEditor'
 import WordListView from './pages/WordListView'
 import Footer from './components/layout/Footer'
 import About from './pages/About'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import FavoriteCrosswords from './pages/FavoriteCrosswords'
+import FavoriteWordLists from './pages/FavoriteWordLists'
 
 function App() {
   return (
@@ -34,7 +38,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/crossword/:id" element={<CrosswordSolver />} />
             <Route path="/wordlist/:id" element={<WordListView />} />
-
+            <Route path="/favorite-crosswords" element={<FavoriteCrosswords />} />
+            <Route path="/favorite-wordlists" element={<FavoriteWordLists />} />
             {/* <Route path="/profile" element={
               <ProtectedRoute>
                 <Profile />
@@ -79,6 +84,17 @@ function App() {
               </ProtectedRoute>
             } />
           </Routes>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={true} // For Hebrew
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </main>
         <Footer />
       </div>

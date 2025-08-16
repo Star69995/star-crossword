@@ -31,7 +31,7 @@ const CrosswordEditor = () => {
         try {
             // Usually you need to send the id along with the data (check your API expectation)
             await updateCrossword(id, formData);
-            navigate(`/crosswords/${id}`);
+            navigate(`/crossword/${id}`);
         } catch (error) {
             console.log('error: ', error);
             // Optionally: handle/save an update error to show in the form

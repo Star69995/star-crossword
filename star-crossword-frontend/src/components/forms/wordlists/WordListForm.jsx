@@ -142,17 +142,15 @@ const WordListForm = ({ initialData, onSubmit }) => {
         setLoading(true);
         try {
             // Only send words array if changed, or always if new
-            if (onSubmit) {
-                let payload = { ...formData };
-                if (!isEdit || wordsText !== (initialData?.words || []).map((w) =>
-                    [w.solution, w.definition].filter(Boolean).join("|")).join("\n")
-                ) {
-                    // Send words only if added/changed, or always on create.
-                    payload.words = words;
-                }
-                await onSubmit(payload);
+            let payload = { ...formData };
+            if (!isEdit || wordsText !== (initialData?.words || []).map((w) =>
+                [w.solution, w.definition].filter(Boolean).join("|")).join("\n")
+            ) {
+                // Send words only if added/changed, or always on create.
+                payload.words = words;
             }
-            navigate("/my-wordlists");
+            await onSubmit(payload);
+
         } catch (error) {
             console.log("error: ", error);
             setFormError(isEdit ? "שגיאה בעדכון רשימת המילים" : "שגיאה ביצירת רשימת המילים");
@@ -191,7 +189,7 @@ const WordListForm = ({ initialData, onSubmit }) => {
                                     parseWordsFromText={parseWordsFromText}
                                     handleImport={handleImport}
                                     handleExport={handleExport}
-                                    disabled={isEdit } 
+                                    disabled={isEdit}
                                 />
                             </FormCard>
                         </div>

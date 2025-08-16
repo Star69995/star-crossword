@@ -3,15 +3,28 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import WordListCard from '../components/cards/WordListCard'
 import { getMyWordLists } from '../services/api'
+import { useAuth } from '../providers/AuthContext'
 
 const MyWordLists = () => {
+    const { user, loading: authLoading } = useAuth()
     const [wordLists, setWordLists] = useState([])
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState('all')
 
     useEffect(() => {
+        // Wait for auth to finish loading
+        if (authLoading) {
+            return;
+        }
+
+        // If no user after auth loaded, don't fetch
+        if (!user) {
+            setLoading(false);
+            return;
+        }
+
         fetchWordLists()
-    }, [])
+    }, [user, authLoading]) // Add all dependencies
 
     const fetchWordLists = async () => {
         try {
