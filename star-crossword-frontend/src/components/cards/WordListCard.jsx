@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify";
 
 const WordListCard = ({ wordList, onDelete }) => {
-    console.log('wordList: ', wordList);
     const { user } = useAuth()
     const navigate = useNavigate()
 
