@@ -9,6 +9,7 @@ const CrosswordCard = ({ crossword, onDelete }) => {
     const navigate = useNavigate()
 
     const handleLike = async (id) => {
+        // TODO: if user is not logged in, redirect to login
         if (!user) return
         await toggleLikeCrossword(id)
 

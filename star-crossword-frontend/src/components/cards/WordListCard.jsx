@@ -10,6 +10,7 @@ const WordListCard = ({ wordList, onDelete }) => {
     const navigate = useNavigate()
 
     const handleLike = async (id) => {
+        // TODO: if user is not logged in, redirect to login
         if (!user) return
         await toggleLikeWordList(id)
     }
