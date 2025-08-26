@@ -12,10 +12,22 @@ app.use(morgan("dev"))
 const port = process.env.PORT ?? 3000
 
 
-// Add this before your routes:
+const allowedOrigins = [
+    "http://localhost:5173",  // local dev
+    "https://your-frontend.vercel.app" // <-- replace with your actual Vercel domain
+];
+
 app.use(cors({
-    origin: 'http://localhost:5173', // Or '*' for development, but see note below!
-    credentials: true, // If you use cookies for auth
+    origin: function (origin, callback) {
+        // allow requests with no origin (like curl or mobile apps)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        } else {
+            return callback(new Error("CORS not allowed for this origin: " + origin), false);
+        }
+    },
+    credentials: true
 }));
 
 
