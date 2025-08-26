@@ -14,7 +14,7 @@ const port = process.env.PORT ?? 3000
 
 const allowedOrigins = [
     "http://localhost:5173",  // local dev
-    "https://your-frontend.vercel.app" // <-- replace with your actual Vercel domain
+    "https://star-crossword.vercel.app"
 ];
 
 app.use(cors({
