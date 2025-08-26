@@ -18,17 +18,11 @@ const WordListView = () => {
         if (authLoading) {
             return;
         }
-
-        // If no user after auth loaded, don't fetch
-        if (!user) {
-            setLoading(false);
-            return;
-        }
         const fetchWordList = async () => {
             try {
                 const wl = await getWordListById(id);
                 setWordList(wl);
-                setIsLiked(wl.likes.includes(user._id));
+                setIsLiked(wl.likes.includes(user?._id));
             } catch (error) {
                 console.log('error: ', error);
                 setLoadError("שגיאה בטעינת הרשימה");

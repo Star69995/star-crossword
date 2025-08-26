@@ -24,12 +24,6 @@ const CrosswordSolver = () => {
             return;
         }
 
-        // If no user after auth loaded, don't fetch
-        if (!user) {
-            setLoading(false);
-            return;
-        }
-
         fetchCrossword()
     }, [id, user, authLoading]) 
 
@@ -38,7 +32,7 @@ const CrosswordSolver = () => {
             setLoading(true)
             const data = await getCrosswordById(id)
             setCrossword(data)
-            setIsLiked(data.likes.includes(user._id))
+            setIsLiked(data.likes.includes(user?._id))
             setGridData(data.crosswordObject.gridData)
         } catch (error) {
             setError('שגיאה בטעינת התשבץ')
@@ -68,7 +62,7 @@ const CrosswordSolver = () => {
     }
 
     const handleLike = async () => {
-
+        // TODO: if user is not logged in, redirect to login
         if (!user) return
 
         try {
