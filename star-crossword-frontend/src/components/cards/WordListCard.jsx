@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify";
 
 const WordListCard = ({ wordList, onDelete }) => {
+    console.log('wordList: ', wordList);
     const { user } = useAuth()
     const navigate = useNavigate()
 
@@ -29,7 +30,7 @@ const WordListCard = ({ wordList, onDelete }) => {
         navigate(`/edit-wordlist/${wordList._id}/`)
     }
 
-    const canEdit = user._id === wordList.creator._id
+    const canEdit = user?._id === wordList.creator._id
 
     return (
         <ContentCard
