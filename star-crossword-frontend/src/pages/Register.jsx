@@ -49,8 +49,21 @@ const Register = () => {
             navigate('/')
             toast.success('הרשמה בוצעה בהצלחה')
         } catch (error) {
-            console.error('Error registering:', error)
-            setError('שגיאה בהרשמה. נסה שוב.')
+            let errorMessage = 'שגיאה בהרשמה. נסה שוב.'
+            if (error.message.includes('User already registered')) {
+                errorMessage = 'משתמש כבר קיים';
+            } else if (error.message.includes('"userName" is not allowed to be empty')) {
+                errorMessage = 'שם המשתמש לא יכול להיות ריק';
+            } else if (error.message.includes('"email" must be a valid email')) {
+                errorMessage = 'כתובת אימייל אינה תקינה';
+            } else if (error.message.includes('"password" is not allowed to be empty')) {
+                errorMessage = 'יש להזין סיסמה';
+            } else if (error.message.includes('"password" length must be at least 6 characters long')) {
+                errorMessage = 'הסיסמה חייבת להכיל לפחות 6 תווים';
+            }
+            // show error message from backend
+            setError(errorMessage);
+            toast.error(`שגיאה בהרשמה: ${errorMessage}`);
         } finally {
             setLoading(false)
         }

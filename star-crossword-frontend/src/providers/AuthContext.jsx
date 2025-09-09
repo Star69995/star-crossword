@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
                 } else {
                     localStorage.removeItem('token');
                 }
-            } 
+            }
         } catch (error) {
             console.error('Error checking auth status:', error);
             localStorage.removeItem('token');
@@ -58,13 +58,22 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            const response = await apiRegister(userData);
-            localStorage.setItem('token', response.token);
-            setUser(response.user);
-            return response;
+            await apiRegister(userData);
+
+            // reuse login flow to ensure token + user are set correctly
+            return await login(userData.email, userData.password);
+
         } catch (error) {
-            console.error('Registration error:', error);
-            throw error;
+            let errorMessage = "Registration failed";
+
+            if (error.response && error.response.data && error.response.data.message) {
+                errorMessage = error.response.data.message; // from backend
+            } else if (error.message) {
+                errorMessage = error.message; // general error
+            }
+
+            console.error("Registration error:", errorMessage);
+            throw new Error(errorMessage);
         }
     };
 

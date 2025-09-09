@@ -137,18 +137,17 @@ export const createCrossword = async (crosswordData) => {
     }
 
     const GridData = MakeGrid({
-       
         size: crosswordData.size,
         maxWords: crosswordData.maxWords,
         definitionsList: words
     });
- console.log('GridData: ', GridData);
+
     const crossword = {
         title: crosswordData.title,
         description: crosswordData.description,
         isPublic: crosswordData.isPublic,
-        crosswordObject: { gridData:  GridData  } 
-        
+        crosswordObject: { gridData: GridData }
+
     }
 
     const response = await api.post('/crosswords/', crossword)
