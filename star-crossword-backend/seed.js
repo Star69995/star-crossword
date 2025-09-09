@@ -1,9 +1,9 @@
 // seed.js
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import {User} from "./model/userModel.js";
-import {WordList} from "./model/wordListModel.js";
-import {Crossword} from "./model/crosswordModel.js";
+import { User } from "./model/userModel.js";
+import { WordList } from "./model/wordListModel.js";
+import { Crossword } from "./model/crosswordModel.js";
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ const seed = async () => {
         const users = await User.insertMany([
             {
                 email: "admin@test.com",
-                password: "$2b$12$WYcUuBidyNfNVVjagGPhFea9KHfTwG3dO3fzb/2.cpywcWHxwdBem", 
+                password: "$2b$12$WYcUuBidyNfNVVjagGPhFea9KHfTwG3dO3fzb/2.cpywcWHxwdBem",
                 userName: "Admin",
                 isContentCreator: true,
             },
@@ -184,9 +184,919 @@ const seed = async () => {
             isPublic: true,
             creator: admin._id,
             crosswordObject: {
-                gridData: {
-                    grid: [ /* === קח כאן בדיוק את ה-gridData המלא שהבאת === */]
-                },
+                "gridData": {
+                    "grid": [
+                        [
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ת",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": 3,
+                                "wordIndex": 2
+                            },
+                            {
+                                "solution": "א",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    },
+                                    {
+                                        "definition": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": 2,
+                                "wordIndex": 2
+                            },
+                            {
+                                "solution": "י",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 2
+                            },
+                            {
+                                "solution": "ל",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 2
+                            },
+                            {
+                                "solution": "נ",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 2
+                            },
+                            {
+                                "solution": "ד",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                                        "isVertical": false
+                                    },
+                                    {
+                                        "definition": "יונק גדול שאוהב דבש",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": 7,
+                                "wordIndex": 7
+                            }
+                        ],
+                        [
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ו",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 1
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ב",
+                                "definitions": [
+                                    {
+                                        "definition": "יונק גדול שאוהב דבש",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 7
+                            }
+                        ],
+                        [
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ר",
+                                "definitions": [
+                                    {
+                                        "definition": "המדינה הגדולה ביותר בעולם בשטח",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": 4,
+                                "wordIndex": 3
+                            },
+                            {
+                                "solution": "ו",
+                                "definitions": [
+                                    {
+                                        "definition": "המדינה הגדולה ביותר בעולם בשטח",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 3
+                            },
+                            {
+                                "solution": "ס",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    },
+                                    {
+                                        "definition": "המדינה הגדולה ביותר בעולם בשטח",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 3
+                            },
+                            {
+                                "solution": "י",
+                                "definitions": [
+                                    {
+                                        "definition": "המדינה הגדולה ביותר בעולם בשטח",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 3
+                            },
+                            {
+                                "solution": "ה",
+                                "definitions": [
+                                    {
+                                        "definition": "המדינה הגדולה ביותר בעולם בשטח",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 3
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            }
+                        ],
+                        [
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ט",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 1
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            }
+                        ],
+                        [
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ח",
+                                "definitions": [
+                                    {
+                                        "definition": "חיית מחמד פרוותית",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": 5,
+                                "wordIndex": 4
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ר",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 1
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            }
+                        ],
+                        [
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ת",
+                                "definitions": [
+                                    {
+                                        "definition": "חיית מחמד פרוותית",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 4
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ז",
+                                "definitions": [
+                                    {
+                                        "definition": "קרוב משפחה של הכלב שחי בלהקות",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": 6,
+                                "wordIndex": 6
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ל",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 1
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            }
+                        ],
+                        [
+                            {
+                                "solution": "ד",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": 1,
+                                "wordIndex": 0
+                            },
+                            {
+                                "solution": "ר",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 0
+                            },
+                            {
+                                "solution": "ו",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    },
+                                    {
+                                        "definition": "חיית מחמד פרוותית",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 4
+                            },
+                            {
+                                "solution": "ם",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 0
+                            },
+                            {
+                                "solution": "א",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    },
+                                    {
+                                        "definition": "קרוב משפחה של הכלב שחי בלהקות",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 6
+                            },
+                            {
+                                "solution": "פ",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 0
+                            },
+                            {
+                                "solution": "ר",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 0
+                            },
+                            {
+                                "solution": "י",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    },
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 1
+                            },
+                            {
+                                "solution": "ק",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 0
+                            },
+                            {
+                                "solution": "ה",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה בקצה הדרומי של אפריקה",
+                                        "isVertical": false
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 0
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            }
+                        ],
+                        [
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ל",
+                                "definitions": [
+                                    {
+                                        "definition": "חיית מחמד פרוותית",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 4
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ב",
+                                "definitions": [
+                                    {
+                                        "definition": "קרוב משפחה של הכלב שחי בלהקות",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 6
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": "ה",
+                                "definitions": [
+                                    {
+                                        "definition": "מדינה שהיא גם יבשת",
+                                        "isVertical": true
+                                    }
+                                ],
+                                "isHighlighted": false,
+                                "definitionNumber": null,
+                                "wordIndex": 1
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            },
+                            {
+                                "solution": null,
+                                "definitions": [],
+                                "isHighlighted": false,
+                                "definitionNumber": null
+                            }
+                        ]
+                    ],
+                    "definitionsUsed": {
+                        "across": [
+                            {
+                                "number": 1,
+                                "text": "מדינה בקצה הדרומי של אפריקה",
+                                "isAnswered": false
+                            },
+                            {
+                                "number": 3,
+                                "text": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                                "isAnswered": false
+                            },
+                            {
+                                "number": 4,
+                                "text": "המדינה הגדולה ביותר בעולם בשטח",
+                                "isAnswered": false
+                            }
+                        ],
+                        "down": [
+                            {
+                                "number": 2,
+                                "text": "מדינה שהיא גם יבשת",
+                                "isAnswered": false
+                            },
+                            {
+                                "number": 5,
+                                "text": "חיית מחמד פרוותית",
+                                "isAnswered": false
+                            },
+                            {
+                                "number": 6,
+                                "text": "קרוב משפחה של הכלב שחי בלהקות",
+                                "isAnswered": false
+                            },
+                            {
+                                "number": 7,
+                                "text": "יונק גדול שאוהב דבש",
+                                "isAnswered": false
+                            }
+                        ]
+                    },
+                    "wordPositions": [
+                        {
+                            "wordIndex": 0,
+                            "definition": "מדינה בקצה הדרומי של אפריקה",
+                            "row": 6,
+                            "col": 1,
+                            "isVertical": false,
+                            "definitionNumber": 1
+                        },
+                        {
+                            "wordIndex": 1,
+                            "definition": "מדינה שהיא גם יבשת",
+                            "row": 0,
+                            "col": 8,
+                            "isVertical": true,
+                            "definitionNumber": 2
+                        },
+                        {
+                            "wordIndex": 2,
+                            "definition": "מדינה בדרום מזרח אסיה עם חופים מרהיבים",
+                            "row": 0,
+                            "col": 7,
+                            "isVertical": false,
+                            "definitionNumber": 3
+                        },
+                        {
+                            "wordIndex": 3,
+                            "definition": "המדינה הגדולה ביותר בעולם בשטח",
+                            "row": 2,
+                            "col": 6,
+                            "isVertical": false,
+                            "definitionNumber": 4
+                        },
+                        {
+                            "wordIndex": 4,
+                            "definition": "חיית מחמד פרוותית",
+                            "row": 4,
+                            "col": 3,
+                            "isVertical": true,
+                            "definitionNumber": 5
+                        },
+                        {
+                            "wordIndex": 6,
+                            "definition": "קרוב משפחה של הכלב שחי בלהקות",
+                            "row": 5,
+                            "col": 5,
+                            "isVertical": true,
+                            "definitionNumber": 6
+                        },
+                        {
+                            "wordIndex": 7,
+                            "definition": "יונק גדול שאוהב דבש",
+                            "row": 0,
+                            "col": 12,
+                            "isVertical": true,
+                            "definitionNumber": 7
+                        }
+                    ]
+
+
+                }
             },
         };
 

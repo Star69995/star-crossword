@@ -31,13 +31,15 @@ const ContentCard = ({
     const handleLike = async () => {
         setLikeLoadingInternal(true);
         try {
-            await onLike(id);
-            if (isLiked) {
-                setIsLiked(false);
-                setLikesCount1(prev => prev - 1);
-            } else {
-                setIsLiked(true);
-                setLikesCount1(prev => prev + 1);
+            const success = await onLike(id);
+            if (success) {  
+                if (isLiked) {
+                    setIsLiked(false);
+                    setLikesCount1(prev => prev - 1);
+                } else {
+                    setIsLiked(true);
+                    setLikesCount1(prev => prev + 1);
+                }
             }
         } catch (error) {
             console.error('Error updating like:', error);

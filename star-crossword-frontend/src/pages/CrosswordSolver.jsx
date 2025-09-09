@@ -25,7 +25,7 @@ const CrosswordSolver = () => {
         }
 
         fetchCrossword()
-    }, [id, user, authLoading]) 
+    }, [id, user, authLoading])
 
     const fetchCrossword = async () => {
         try {
@@ -61,22 +61,21 @@ const CrosswordSolver = () => {
         }
     }
 
-    const handleLike = async () => {
-        // TODO: if user is not logged in, redirect to login
-        if (!user) return
-
-        try {
-            await toggleLikeCrossword(crossword._id);
-            if (isLiked) {
-                setIsLiked(false);
-            } else {
-                setIsLiked(true);
-            }
-        } catch (error) {
-            console.error('Error updating like:', error);
+    const handleLike = async (id) => {
+        if (!user) {
+            toast.info("כדי לעשות לייק על תשבץ צריך להתחבר תחילה")
+            return false;
         }
-
-    };
+        try {
+            await toggleLikeCrossword(id)
+            setIsLiked(!isLiked);
+            return true;
+        } catch (error) {
+            console.error('Error liking word list:', error)
+            toast.error('שגיאה בעדכון לייק');
+            return false;
+        }
+    }
 
     if (loading) {
         return (

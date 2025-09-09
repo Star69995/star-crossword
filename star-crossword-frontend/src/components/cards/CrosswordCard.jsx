@@ -3,16 +3,25 @@ import { toggleLikeCrossword, deleteCrossword } from '../../services/api'
 import PropTypes from 'prop-types';
 import ContentCard from './ContentCard';
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 const CrosswordCard = ({ crossword, onDelete }) => {
     const { user } = useAuth()
     const navigate = useNavigate()
 
     const handleLike = async (id) => {
-        // TODO: if user is not logged in, redirect to login
-        if (!user) return
-        await toggleLikeCrossword(id)
-
+        if (!user) {
+            toast.info("כדי לעשות לייק על תשבץ צריך להתחבר תחילה")
+            return false;
+        }
+        try {
+            await toggleLikeCrossword(id)
+            return true;
+        } catch (error) {
+            console.error('Error liking word list:', error)
+            toast.error('שגיאה בעדכון לייק');
+            return false;
+        }
     }
 
     const handleDelete = async (id) => {
@@ -30,7 +39,7 @@ const CrosswordCard = ({ crossword, onDelete }) => {
 
     return (
         <ContentCard
-        id={crossword._id}
+            id={crossword._id}
             title={crossword.title}
             description={crossword.description}
             creator={crossword.creator?.userName}

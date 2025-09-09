@@ -41,11 +41,20 @@ const WordListView = () => {
     const canEdit =
         user && (user._id === wordList.creator._id); // תמיכה גם במקרים בהם creator הוא רק id
 
-    
     const handleLike = async () => {
-        if (!user) return
-        setIsLiked(!isLiked)
-        await toggleLikeWordList(wordList._id)
+        if (!user) {
+            toast.info("כדי לעשות לייק על רשימת מילים צריך להתחבר תחילה")
+            return false;
+        }
+        try {
+            await toggleLikeWordList(wordList._id)
+            setIsLiked(!isLiked)
+            return true;
+        } catch (error) {
+            console.error('Error liking word list:', error)
+            toast.error('שגיאה בעדכון לייק');
+            return false;
+        }
     }
 
     const handleDelete = async () => {

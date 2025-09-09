@@ -1,7 +1,3 @@
-// import React from 'react';
-// import { useCrossword } from '../providers/CrosswordContext';
-
-
 const MakeGrid = ({ size = 12, maxWords = 10, definitionsList = [] }) => {
     size = parseInt(size);
     maxWords = parseInt(maxWords);
@@ -47,6 +43,10 @@ const MakeGrid = ({ size = 12, maxWords = 10, definitionsList = [] }) => {
         return grid.slice(top, bottom + 1).map(row => row.slice(left, right + 1));
     };
 
+    const sanitizeWord = (word) => {
+        return word.replace(/[^A-Za-zא-ת]/g, "");
+        // keeps only English or Hebrew letters, removes spaces, apostrophes, dashes, etc.
+    };
 
     const canPlaceWord = (grid, word, row, col, isVertical) => {
         if (isVertical && row + word.length > size) return false;
@@ -125,6 +125,11 @@ const MakeGrid = ({ size = 12, maxWords = 10, definitionsList = [] }) => {
             .slice(0, maxWords);
 
         const sortedWords = shuffledDefinitions
+            .map(def => ({
+                ...def,
+                solution: sanitizeWord(def.solution)
+            }))
+            .filter(def => def.solution.length > 0) // keep only valid words
             .sort((a, b) => b.solution.length - a.solution.length);
 
         const firstWord = sortedWords[0];
