@@ -109,11 +109,50 @@ const WordListForm = ({ initialData, onSubmit }) => {
         URL.revokeObjectURL(url);
     };
 
-    const handleFormSubmit = async (formData) => {
-        setFormError("");
-        const isEdit = !!initialData;
+    const validateWords = (wordsText) => {
+        const lines = wordsText.split("\n").filter((line) => line.trim());
 
-        // Basic validation
+        if (lines.length < 2) {
+            return "יש להוסיף לפחות שתי מילים";
+        }
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+
+            // Count how many pipes exist
+            const pipeCount = (line.match(/\|/g) || []).length;
+
+            // Must contain exactly 1 pipe (word + definition)
+            if (pipeCount !== 1) {
+                return `שגיאה בשורה ${i + 1}: פורמט תקין הוא 'מילה|הגדרה' (נמצא ${pipeCount} |)`;
+            }
+
+            const parts = line.split("|").map((p) => p.trim());
+
+            // First part (solution/word) required
+            if (!parts[0]) {
+                return `שגיאה בשורה ${i + 1}: שדה 'מילה' חובה לפני ה-|`;
+            }
+
+            // Second part (definition) required
+            if (!parts[1]) {
+                return `שגיאה בשורה ${i + 1}: חייבת להיות גם הגדרה אחרי ה-|`;
+            }
+
+            // Validate only Hebrew in the solution
+            const hebrewRegex = /^[\u0590-\u05FF\s-]+$/;
+            if (!hebrewRegex.test(parts[0])) {
+                return `שגיאה בשורה ${i + 1}: הפתרון חייב להיות בעברית בלבד`;
+            }
+        }
+
+        return null; 
+    };
+
+    const handleFormSubmit = async (formData) => {
+        const isEdit = !!initialData; 
+
+        // Validate "meta fields"
         if (!formData.title.trim()) {
             setFormError("יש להכניס שם לרשימה");
             return;
@@ -123,36 +162,32 @@ const WordListForm = ({ initialData, onSubmit }) => {
             return;
         }
 
-        const words = parseWordsFromText(wordsText);
+        // Validate words section
+        const error = validateWords(wordsText);
+        if (error) {
+            setFormError(error);
+            return;
+        }
+        setFormError("");
 
-        // On create, require at least 2 words; on edit, allow empty to leave unchanged (usually)
-        if (!isEdit && words.length < 2) {
-            setFormError("יש להוסיף לפחות שתי מילים");
-            return;
-        }
-        const hebrewRegex = /^[\u0590-\u05FF\s-]+$/;
-        const nonHebrew = words.find((word) => !hebrewRegex.test(word.solution));
-        if (!isEdit && nonHebrew) {
-            setFormError(
-                "הפתרון חייב להיות בעברית בלבד (ללא אנגלית/מספרים/תווים לא חוקיים)"
-            );
-            return;
-        }
+        const words = parseWordsFromText(wordsText);
 
         setLoading(true);
         try {
-            // Only send words array if changed, or always if new
             let payload = { ...formData };
-            if (!isEdit || wordsText !== (initialData?.words || []).map((w) =>
-                [w.solution, w.definition].filter(Boolean).join("|")).join("\n")
+            if (
+                !isEdit ||
+                wordsText !==
+                ([])
+                    .map((w) => [w.solution, w.definition].filter(Boolean).join("|"))
+                    .join("\n")
             ) {
-                // Send words only if added/changed, or always on create.
                 payload.words = words;
             }
-            await onSubmit(payload);
 
+            await onSubmit(payload);
         } catch (error) {
-            console.log("error: ", error);
+            console.error("error: ", error);
             setFormError(isEdit ? "שגיאה בעדכון רשימת המילים" : "שגיאה ביצירת רשימת המילים");
         } finally {
             setLoading(false);
@@ -189,7 +224,6 @@ const WordListForm = ({ initialData, onSubmit }) => {
                                     parseWordsFromText={parseWordsFromText}
                                     handleImport={handleImport}
                                     handleExport={handleExport}
-                                    disabled={isEdit}
                                 />
                             </FormCard>
                         </div>

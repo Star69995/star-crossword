@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../providers/AuthContext'
 import { toast } from "react-toastify";
+import Joi from 'joi'
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' })
@@ -10,18 +11,51 @@ const Login = () => {
     const { login } = useAuth()
     const navigate = useNavigate()
 
+    const loginSchema = Joi.object({
+        email: Joi.string().email({ tlds: false }).required().messages({
+            'string.empty': 'נא להזין כתובת אימייל',
+            'string.email': 'נא להזין כתובת אימייל תקינה'
+        }),
+        password: Joi.string().min(6).required().messages({
+            'string.empty': 'נא להזין סיסמה',
+            'string.min': 'הסיסמה חייבת להכיל לפחות 6 תווים'
+        }),
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
         setError('')
+
+        // Joi client-side validation
+        const { error: validationError } = loginSchema.validate(formData, { abortEarly: true })
+        if (validationError) {
+            setError(validationError.details[0].message) // shows first error in Hebrew
+            setLoading(false)
+            return
+        }
 
         try {
             await login(formData.email, formData.password)
             navigate('/')
             toast.success('התחברת בהצלחה')
         } catch (error) {
-            console.log('error: ', error);
-            setError('שגיאה בהתחברות. יש לבדוק את הפרטים ולנסות שוב.')
+            // Get server message if sent
+            let serverMessage = error?.response?.data || error.message
+
+            if (serverMessage?.includes('User not found')) {
+                serverMessage = 'משתמש לא נמצא'
+            } else if (serverMessage?.includes('Incorrect password')) {
+                serverMessage = 'סיסמה שגויה'
+            } else if (serverMessage?.includes('"email" must be a valid email')) {
+                serverMessage = 'כתובת אימייל לא תקינה'
+            }
+            else if (serverMessage?.includes("Invalid email or password")) {
+                serverMessage = 'המייל או הסיסמה לא נכונים'
+            }
+
+            // Optional: you can even re-run Joi validation if your backend uses Joi
+            setError(serverMessage || 'שגיאה בהתחברות. יש לבדוק את הפרטים ולנסות שוב.')
         } finally {
             setLoading(false)
         }

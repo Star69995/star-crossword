@@ -44,7 +44,11 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await apiLogin(email, password);
             localStorage.setItem('token', response.token);
-            setUser(response.user);
+
+            // fetch the full user data immediately
+            const userData = await getCurrentUser();
+            setUser(userData);
+
             return response;
         } catch (error) {
             console.error('Login error:', error);

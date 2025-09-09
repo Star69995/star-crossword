@@ -16,10 +16,10 @@ router.post("/", async (req, res) => {
     }
     // system validation
     let user = await User.findOne({ email: req.body.email })
-    if (!user) return res.status(400).send("Invalid email")
+    if (!user) return res.status(400).send("Invalid email or password")
 
     const validPassword = await bcrypt.compare(req.body.password, user.password)
-    if (!validPassword) return res.status(400).send("Invalid password")
+    if (!validPassword) return res.status(400).send("Invalid email or password")
 
     // process
     const token = jwt.sign({ _id: user._id, isContentCreator: user.isContentCreator }, process.env.TOKEN_SECRET)

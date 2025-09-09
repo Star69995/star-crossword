@@ -39,7 +39,7 @@ const WordListTextArea = ({
 תשבץ|משחק מילים צולבות
 
 כל מילה בשורה נפרדת
-פורמט: מילה|הגדרה|קטגוריה (ההגדרה והקטגוריה אופציונליות)`}
+פורמט: מילה|הגדרה`}
             value={wordsText}
             onChange={(e) => setWordsText(e.target.value)}
             style={{ minHeight: "200px" }}

@@ -27,7 +27,7 @@ const Navbar = () => {
                 bsCollapseRef.current.dispose();
             }
         };
-    }, [user]);
+    }, []);
 
     const hideNavbar = () => {
         if (bsCollapseRef.current) {
@@ -136,11 +136,11 @@ const Navbar = () => {
                     <ul className="navbar-nav">
                         {user ? (
                             <>
-                                <li className="nav-item">
+                                {/* <li className="nav-item">
                                     <Link className="nav-link" to="/profile" onClick={hideNavbar}>
-                                        {user.name}
+                                        {user.userName}
                                     </Link>
-                                </li>
+                                </li> */}
                                 <li className="nav-item">
                                     <button
                                         className="btn btn-link nav-link"
