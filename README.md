@@ -18,7 +18,7 @@ Star Crossword הוא פרויקט גמר הבנוי מ־**צד שרת (Node.js 
 ---
 ## קישורים חיים
 - [צד לקוח](https://star-crossword.vercel.app/)
-- [צד שרת](https://star-crossword-production.up.railway.app)
+- [צד שרת](https://star-crossword.onrender.com/)
 ---
 
 ## 🖥️ צד שרת (Backend)  
