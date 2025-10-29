@@ -10,14 +10,14 @@ const Block = ({ row, col }) => {
 
     const inputRef = useRef(null);
 
-    const handleChange = (e) => {
-        const inputValue = e.target.value;
-        if (inputValue === '' || /^[א-ת]$/.test(inputValue)) {
-            updateCell(row, col, inputValue);
-            // מציאת האות הבאה באותה הגדרה
-            moveToNextCell(row, col, selectedDefinition.isVertical);
-        }
-    };
+    // const handleChange = (e) => {
+    //     const inputValue = e.target.value;
+    //     if (inputValue === '' || /^[א-ת]$/.test(inputValue)) {
+    //         updateCell(row, col, inputValue);
+    //         // מציאת האות הבאה באותה הגדרה
+    //         moveToNextCell(row, col, selectedDefinition.isVertical);
+    //     }
+    // };
 
     // פונקציה שמעבירה את הפוקוס לאות הבאה
     const moveToNextCell = (row, col, isVertical) => {
@@ -48,41 +48,6 @@ const Block = ({ row, col }) => {
                 return
             }
         }
-
-
-        // console.log("out of bounds or black");
-
-        // // look for the next empty cell
-        // for (let i = 0; i < grid.length; i++) {
-        //     for (let j = 0; j < grid[0].length; j++) {
-        //         if (grid[i][j].solution != null) {
-        //             const nextCell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-        //             // console.log(nextCell);
-
-        //             if (nextCell && nextCell.disabled && nextCell.value === '' && ! nextCell.hasAttribute('readonly')) {
-        //                 // console.log(nextCell);
-        //                 nextCell.focus();
-        //                 return
-        //             }
-        //         }
-        //     }
-        // }
-
-        // for (let i = 0; i < grid.length; i++) {
-        //     for (let j = 0; j < grid[0].length; j++) {
-        //         if (grid[i][j].solution != null) {
-        //             const nextCell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-        //             // console.log(nextCell);
-
-        //             if (nextCell && nextCell.disabled == false && ! nextCell.hasAttribute('readonly')) {
-        //                 // console.log(nextCell);
-        //                 nextCell.focus();
-        //                 return
-        //             }
-        //         }
-        //     }
-        // }
-
     };
 
     const handleClick = () => {
@@ -91,6 +56,67 @@ const Block = ({ row, col }) => {
         }
     };
     const isBlack = cell.solution === null;
+
+    const moveToPrevCell = (row, col, isVertical) => {
+        let prevRow = row;
+        let prevCol = col;
+
+        // determine direction
+        if (isVertical) prevRow--;
+        else prevCol--;
+
+        // make sure we’re still inside the grid
+        if (prevRow >= 0 && prevRow < grid.length && prevCol >= 0 && prevCol < grid[0].length) {
+            const prevCell = document.querySelector(
+                `[data-row="${prevRow}"][data-col="${prevCol}"]`
+            );
+
+            if (prevCell && !prevCell.disabled && !prevCell.hasAttribute("readonly")) {
+                // clear previous cell value
+                updateCell(prevRow, prevCol, "");
+
+                // focus it slightly delayed to ensure DOM updates render first
+                setTimeout(() => prevCell.focus(), 10);
+
+                return;
+            } else {
+                // recursively move further back if current previous is invalid
+                moveToPrevCell(prevRow, prevCol, isVertical);
+            }
+        }
+    };
+
+    const handleChange = (e) => {
+        const inputValue = e.target.value;
+
+        // Normal letter typing (A-Z or Hebrew)
+        if (/^[א-ת]$/.test(inputValue)) {
+            updateCell(row, col, inputValue);
+            moveToNextCell(row, col, selectedDefinition.isVertical);
+            return;
+        }
+
+        // Handle deletion (manual deletion via Backspace or clearing)
+        if (inputValue === '') {
+            updateCell(row, col, '');
+            // Do NOT move here — backspace movement handled in onKeyDown
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Backspace") {
+            e.preventDefault();
+
+            // CASE 1: Current cell has a value → just clear it
+            if (cell.value) {
+                updateCell(row, col, ""); // clear current
+                return;
+            }
+
+            // CASE 2: Current cell is already empty → move back and clear previous
+            moveToPrevCell(row, col, selectedDefinition.isVertical);
+        }
+    };
 
     // const isSelected = selectedDefinition && cell.definitions.includes(selectedDefinition);
 
@@ -141,6 +167,10 @@ const Block = ({ row, col }) => {
                 }}
                 onBlur={() => {
                     setFocusedCell(null);
+                }}
+                onKeyDown={(e) => {
+                    // detect Backspace
+                    handleKeyDown(e);
                 }}
                 data-row={row}
                 data-col={col}

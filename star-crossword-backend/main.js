@@ -14,6 +14,7 @@ const port = process.env.PORT ?? 3000
 
 const allowedOrigins = [
     "http://localhost:5173",  // local dev
+    "http://192.168.1.4:5173", // ✅ allow access from your LAN
     "https://star-crossword.vercel.app"
 ];
 
@@ -46,9 +47,9 @@ app.use("/api/wordlists", require("./routes/wordList"))
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log("connected to database");
-    app.listen(port, () => {
-        console.log(`listening on port ${port}`);
-    })
+    app.listen(port, "0.0.0.0", () => {
+        console.log(`✅ Server listening on http://192.168.1.4:${port}`);
+    });
 }).catch((err) => {
     console.log(err);
 })

@@ -7,23 +7,22 @@ const Crossword = () => {
     const { grid, definitions } = useCrossword();
 
     return (
-        <div className="p-6 border rounded-lg shadow-lg">
-            <div className="text-center m-3 fs-4 fw-bold">תשבץ</div>
+        <div className="container p-4 border rounded shadow">
+            <div className="text-center mb-4 fs-4 fw-bold">תשבץ</div>
 
             <CurrentDef />
-            <div className="flex justify-center">
-                <Grid crossword={grid} />
+
+            <div className="row justify-content-center align-items-start">
+                {/* Grid area */}
+                <div className="col-12 col-lg-6 mb-4 mb-lg-0 d-flex justify-content-center">
+                    <Grid crossword={grid} />
+                </div>
+
+                {/* Definitions area */}
+                <div className="col-12 col-lg-5">
+                    <DefinitionsArea definitions={definitions} />
+                </div>
             </div>
-            <CurrentDef />
-
-            <DefinitionsArea definitions={definitions} />
-
-            {/* <div className="mt-4 text-center d-flex justify-content-evenly mb-3">
-                <button onClick={handleToggleSolution} className="btn btn-success px-4 py-2 ms-2">
-                    {showSolution ? 'הסתר פתרון' : 'הצג פתרון'}
-                </button>
-            </div> */}
-
         </div>
     );
 };

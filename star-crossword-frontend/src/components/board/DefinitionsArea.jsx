@@ -13,8 +13,8 @@ function DefinitionsArea() {
     }
 
     return (
-        <div className="mt-1 d-flex flex-column gap-2">
-            <h2>הגדרות:</h2>
+        <div className="mt-1 d-flex flex-column gap-2 p-3">
+            <h2 className="text-center">הגדרות:</h2>
 
             <div
                 style={{ display: "flex", justifyContent: "space-evenly" }}>
